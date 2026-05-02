@@ -1,4 +1,4 @@
-import MobileBar from "./MobileMenu";
+import MobileBar from "./MobileBar";
 
 const Header = () => {
   return (
