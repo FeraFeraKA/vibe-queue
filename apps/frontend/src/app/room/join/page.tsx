@@ -6,9 +6,7 @@ const JoinPage = () => {
   return (
     <>
       <Background />
-      <div className="w-[90%] md:w-[70%] mx-auto z-10 relative">
-        <Header />
-      </div>
+      <Header />
       <JoinCard />
     </>
   );

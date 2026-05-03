@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 
 const MainPage = () => {
   return (
-    <main id="main" className="mx-auto max-w-4xl px-4 py-24 text-center">
+    <main id="main" className="max-w-4xl mx-auto py-24 px-4 text-center z-10">
       <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
         Main Page
       </p>

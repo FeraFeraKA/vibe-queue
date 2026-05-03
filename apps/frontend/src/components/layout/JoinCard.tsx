@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -12,34 +15,63 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 const JoinCard = () => {
+  const [code, setCode] = useState("");
+  const [nickname, setNickname] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission
+
+    setCode("");
+    setNickname("");
+  };
+
   return (
-    <Card className="w-[90%] max-w-xl mx-auto mt-10 relative z-10">
-      <CardHeader>
-        <CardTitle>Join a room</CardTitle>
-        <CardDescription>Enter the code told by your crew</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form className="flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="room-code">Room Code</Label>
-            <Input id="room-code" type="text" placeholder="#47D9" />
-          </div>
-          <div className="flex flex-col gap-3">
-            <Label htmlFor="nickname">Nickname</Label>
-            <Input
-              id="nickname"
-              type="text"
-              placeholder="Enter your nickname"
-            />
-          </div>
-        </form>
-      </CardContent>
-      <CardFooter>
-        <Button type="submit" className="w-full text-white dark:bg-blue-700">
-          <Link href="/room/DEMO">Join Room</Link>
-        </Button>
-      </CardFooter>
-    </Card>
+    <div className="w-full max-w-xl mx-auto mt-10 px-4 relative z-10">
+      <Card>
+        <CardHeader>
+          <CardTitle>Join a room</CardTitle>
+          <CardDescription>Enter the code told by your crew</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form
+            className="flex flex-col gap-6"
+            id="join-room-form"
+            onSubmit={handleSubmit}
+          >
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="room-code">Room Code</Label>
+              <Input
+                id="room-code"
+                type="text"
+                placeholder="#47D9"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col gap-3">
+              <Label htmlFor="nickname">Nickname</Label>
+              <Input
+                id="nickname"
+                type="text"
+                placeholder="Enter your nickname"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+              />
+            </div>
+          </form>
+        </CardContent>
+        <CardFooter>
+          <Button
+            type="submit"
+            form="join-room-form"
+            className="w-full text-white dark:bg-blue-700"
+          >
+            <Link href="/room/DEMO">Join Room</Link>
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
   );
 };
 

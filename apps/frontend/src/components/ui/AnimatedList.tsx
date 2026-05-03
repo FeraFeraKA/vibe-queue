@@ -170,7 +170,7 @@ const AnimatedList: React.FC<AnimatedListProps> = ({
     <div className={`relative w-[500px] ${className}`}>
       <div
         ref={listRef}
-        className={`${maxHeight} overflow-y-auto p-4 pl-0 pb-0 ${
+        className={`${maxHeight} overflow-y-auto pt-4 ${
           displayScrollbar
             ? "[&::-webkit-scrollbar]:w-[8px] [&::-webkit-scrollbar-track]:bg-[#171717] [&::-webkit-scrollbar-thumb]:bg-[#222] [&::-webkit-scrollbar-thumb]:rounded-[4px]"
             : "scrollbar-hide"
