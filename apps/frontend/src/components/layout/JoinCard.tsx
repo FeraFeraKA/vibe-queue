@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -35,7 +36,7 @@ const JoinCard = () => {
       </CardContent>
       <CardFooter>
         <Button type="submit" className="w-full text-white dark:bg-blue-700">
-          Join Room
+          <Link href="/room/DEMO">Join Room</Link>
         </Button>
       </CardFooter>
     </Card>
