@@ -7,9 +7,9 @@ const Header = () => {
     <>
       <header>
         <div
-          className="relative flex w-[70%] h-16 items-center justify-between mx-auto
-          border rounded-2xl my-2 px-3 bg-white border-black/10 z-10
-          dark:backdrop-blur-2xl dark:border-white/10 dark:bg-[#332b45]/10 
+          className="flex h-16 items-center justify-between
+          border rounded-2xl my-2 px-3 bg-white/50 border-black/10
+          backdrop-blur-2xl dark:border-white/10 dark:bg-[#332b45]/10 
           "
         >
           <Link href="/" className="text-2xl font-bold text-center">

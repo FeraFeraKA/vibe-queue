@@ -1,15 +1,15 @@
+import Background from "@/components/layout/Background";
 import Header from "@/components/layout/Header";
-import LineWaves from "@/components/ui/LineWaves";
+import MainPage from "@/components/layout/MainPage";
 
 export default function HomePage() {
   return (
     <>
-      <div className="fixed inset-0">
-        <LineWaves enableMouseInteraction mouseInfluence={1} />
-      </div>
+      <Background />
 
-      <div className="px-3 md:px-6 lg:px-8 xl:px-10">
+      <div className="w-[90%] md:w-[70%] mx-auto z-10 relative">
         <Header />
+        <MainPage />
       </div>
     </>
   );

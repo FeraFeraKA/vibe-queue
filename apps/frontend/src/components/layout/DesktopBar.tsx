@@ -5,7 +5,10 @@ const DesktopBar = () => {
   return (
     <>
       <div className="hidden md:flex items-center gap-4">
-        <Button variant="outline">
+        <Button
+          variant="outline"
+          className="bg-black text-white dark:bg-blue-700"
+        >
           <Link href="/room/create">Create room</Link>
         </Button>
         <Button variant="outline">
