@@ -107,6 +107,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
       lucide-react:
         specifier: ^1.14.0
         version: 1.14.0(react@19.2.4)
@@ -116,12 +119,18 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      ogl:
+        specifier: ^1.0.11
+        version: 1.0.11
       react:
         specifier: 19.2.4
         version: 19.2.4
       react-dom:
         specifier: 19.2.4
         version: 19.2.4(react@19.2.4)
+      react-icons:
+        specifier: ^5.6.0
+        version: 5.6.0(react@19.2.4)
       shadcn:
         specifier: ^4.6.0
         version: 4.6.0(@types/node@20.19.39)(typescript@5.9.3)
@@ -2789,6 +2798,9 @@ packages:
     resolution: {integrity: sha512-5bJ+nf/UCpAjHM8i06fl7eLyVC9iuNAjm9qzkiu2ZGhM0VscSvS6WDPfAwkdkBuoXGM9FJSbKl6wylMwP9Ktig==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
 
+  gsap@3.15.0:
+    resolution: {integrity: sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==}
+
   handlebars@4.7.9:
     resolution: {integrity: sha512-4E71E0rpOaQuJR2A3xDZ+GM1HyWYv1clR58tC8emQNeQe3RH7MAzSbat+V0wG78LQBo6m6bzSG/L4pBuCsgnUQ==}
     engines: {node: '>=0.4.7'}
@@ -3709,6 +3721,9 @@ packages:
     resolution: {integrity: sha512-gXah6aZrcUxjWg2zR2MwouP2eHlCBzdV4pygudehaKXSGW4v2AsRQUK+lwwXhii6KFZcunEnmSUoYp5CXibxtA==}
     engines: {node: '>= 0.4'}
 
+  ogl@1.0.11:
+    resolution: {integrity: sha512-kUpC154AFfxi16pmZUK4jk3J+8zxwTWGPo03EoYA8QPbzikHoaC82n6pNTbd+oEaJonaE8aPWBlX7ad9zrqLsA==}
+
   on-finished@2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
     engines: {node: '>= 0.8'}
@@ -3931,6 +3946,11 @@ packages:
     resolution: {integrity: sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==}
     peerDependencies:
       react: ^19.2.4
+
+  react-icons@5.6.0:
+    resolution: {integrity: sha512-RH93p5ki6LfOiIt0UtDyNg/cee+HLVR6cHHtW3wALfo+eOHTp8RnU2kRkI6E+H19zMIs03DyxUG/GfZMOGvmiA==}
+    peerDependencies:
+      react: '*'
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -7679,6 +7699,8 @@ snapshots:
 
   graphql@16.13.2: {}
 
+  gsap@3.15.0: {}
+
   handlebars@4.7.9:
     dependencies:
       minimist: 1.2.8
@@ -8706,6 +8728,8 @@ snapshots:
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
 
+  ogl@1.0.11: {}
+
   on-finished@2.4.1:
     dependencies:
       ee-first: 1.1.1
@@ -8929,6 +8953,10 @@ snapshots:
     dependencies:
       react: 19.2.4
       scheduler: 0.27.0
+
+  react-icons@5.6.0(react@19.2.4):
+    dependencies:
+      react: 19.2.4
 
   react-is@16.13.1: {}
 

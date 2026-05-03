@@ -22,12 +22,11 @@ const MobileBar = () => {
               <SheetTitle>Menu</SheetTitle>
             </SheetHeader>
             <span className="h-px bg-gray-300"></span>
-            <nav className="mt-8 mx-5 flex flex-col gap-2">
-              <Link href="/">Home</Link>
+            <div className="mt-8 mx-5 flex flex-col gap-2">
               <Link href="/room/create">Create room</Link>
               <Link href="/room/join">Join room</Link>
               <Link href="/about">About</Link>
-            </nav>
+            </div>
           </SheetContent>
         </Sheet>
       </div>
