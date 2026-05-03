@@ -3,9 +3,14 @@ import { Button } from "../ui/button";
 
 const MainPage = () => {
   return (
-    <main className="mt-20 text-center font-bold ">
-      <h1 className="text-6xl">Create a live music queue.</h1>
-      <p className="text-4xl mt-4">
+    <main id="main" className="mx-auto max-w-4xl px-4 py-24 text-center">
+      <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
+        Main Page
+      </p>
+      <h1 className="mt-4 text-4xl md:text-6xl font-bold tracking-tight">
+        Create a live music queue.
+      </h1>
+      <p className="mt-6 text-lg leading-8 text-muted-foreground">
         Vibe Queue lets friends search Spotify tracks, add songs to a shared
         queue, vote for the next track, and keep the vibe moving in real time.
       </p>

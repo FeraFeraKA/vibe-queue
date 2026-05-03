@@ -2,8 +2,8 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import DarkVeil from "../ui/DarkVeil";
 import LightRays from "../ui/LightRays";
-import LineWaves from "../ui/LineWaves";
 
 const Background = () => {
   const [mounted, setMounted] = useState(false);
@@ -21,11 +21,7 @@ const Background = () => {
   return (
     <>
       <div className="fixed inset-0">
-        {resolvedTheme === "dark" ? (
-          <LineWaves enableMouseInteraction mouseInfluence={2} />
-        ) : (
-          <LightRays />
-        )}
+        {resolvedTheme === "dark" ? <DarkVeil /> : <LightRays />}
       </div>
     </>
   );

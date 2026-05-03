@@ -10,12 +10,14 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
-const JoinCard = () => {
+const CreateCard = () => {
   return (
     <Card className="w-[90%] max-w-xl mx-auto mt-10 relative z-10">
       <CardHeader>
-        <CardTitle>Join a room</CardTitle>
-        <CardDescription>Enter the code told by your crew</CardDescription>
+        <CardTitle>Create a room</CardTitle>
+        <CardDescription>
+          Invite your friends to join your queue
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form className="flex flex-col gap-6">
@@ -35,11 +37,11 @@ const JoinCard = () => {
       </CardContent>
       <CardFooter>
         <Button type="submit" className="w-full text-white dark:bg-blue-700">
-          Join Room
+          Create Room
         </Button>
       </CardFooter>
     </Card>
   );
 };
 
-export default JoinCard;
+export default CreateCard;
