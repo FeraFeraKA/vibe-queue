@@ -1,4 +1,6 @@
+import { mockSearchTracks } from "@/mok";
 import { Copy, Search } from "lucide-react";
+import Image from "next/image";
 import AnimatedList from "../ui/AnimatedList";
 import { Button } from "../ui/button";
 
@@ -30,12 +32,27 @@ const Room = ({ code }: IRoom) => {
       <section className="grid grid-cols-1 gap-6 lg:flex-1 lg:grid-cols-10 my-4">
         <div className="min-h-80 lg:col-span-7 lg:h-full border rounded-3xl bg-[#171717] p-6">
           <p className="text-muted-foreground">Now Playing</p>
-          <div className="mt-4 border min-h-60 rounded-3xl border-dashed"></div>
+          <div className="flex flex-col md:flex-row items-center mt-4 p-4 border min-h-60 rounded-3xl border-dashed">
+            <Image
+              src="https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228"
+              alt="Now Playing"
+              width={200}
+              height={200}
+              className="rounded-3xl"
+            />
+            <div className="mx-auto text-center">
+              <p className="text-3xl font-bold">Blinding Lights</p>
+              <p className="text-lg text-muted-foreground mt-1 max-w-75">The Weeknd</p>
+            </div>
+          </div>
           <p className="text-muted-foreground mt-6">Queue</p>
           <AnimatedList
             className="w-full"
             maxHeight="max-h-75"
             showGradients={false}
+            items={mockSearchTracks.map(
+              (track) => track.title + " - " + track.artistText,
+            )}
           />
         </div>
         <div className="min-h-80 lg:col-span-3 lg:h-full border rounded-3xl bg-[#171717] p-6">
@@ -44,6 +61,7 @@ const Room = ({ code }: IRoom) => {
             className="w-full"
             maxHeight="max-h-151"
             showGradients={false}
+            items={["Fera", "Sophie", "Alex", "Jordan", "Taylor", "Morgan", "Casey"]}
           />
         </div>
       </section>
