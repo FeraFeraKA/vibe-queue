@@ -1,27 +1,69 @@
-import { Input } from "../ui/input";
+"use client";
+
+import { IMockTracks } from "@/mock";
+import { Plus } from "lucide-react";
+import Image from "next/image";
+import { Button } from "../ui/button";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "../ui/command";
 
 interface ISearchModalProps {
   isOpen: boolean;
+  tracks: IMockTracks[];
   handleOpen: (flag: boolean) => void;
+  handleAddTrack: (track: IMockTracks) => void;
 }
 
-const SearchModal = ({ isOpen, handleOpen }: ISearchModalProps) => {
+const SearchModal = ({
+  isOpen,
+  handleOpen,
+  tracks,
+  handleAddTrack,
+}: ISearchModalProps) => {
   return (
     <>
-      {isOpen ? (
-        <div className="flex justify-center fixed inset-0 z-20">
-          <div
-            className="bg-black/50 backdrop-blur-xs absolute inset-0"
-            onClick={() => handleOpen(false)}
-          ></div>
-          <div className="mt-30 w-full max-w-5xl px-4 z-20">
-            <Input
-              placeholder="Search tracks..."
-              className="rounded-xl h-12 bg-[#171717]"
-            />
-          </div>
-        </div>
-      ) : null}
+      <CommandDialog
+        open={isOpen}
+        onOpenChange={handleOpen}
+        className="max-w-248! w-[calc(100vw-32px)] top-35"
+      >
+        <Command>
+          <CommandInput placeholder="Type to search tracks..." />
+          <CommandList className="max-h-[calc(100vh-320px)]">
+            <CommandEmpty>No results found.</CommandEmpty>
+            {tracks.map((track) => (
+              <CommandGroup key={track.spotifyId} heading={track.title}>
+                <CommandItem className="flex justify-between">
+                  <div className="flex items-center gap-4">
+                    <Image
+                      src={track.coverUrl}
+                      alt={track.title}
+                      width={40}
+                      height={40}
+                    />
+                    {track.title + " - " + track.artistText}
+                  </div>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleAddTrack(track)}
+                  >
+                    <Plus /> Add
+                  </Button>
+                </CommandItem>
+                <CommandSeparator />
+              </CommandGroup>
+            ))}
+          </CommandList>
+        </Command>
+      </CommandDialog>
     </>
   );
 };

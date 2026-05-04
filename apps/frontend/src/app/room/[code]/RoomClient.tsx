@@ -58,6 +58,10 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     );
   };
 
+  const handleAddTrack = (track: IMockTracks) => {
+    setTracks((prevTracks) => [...prevTracks, track]);
+  };
+
   return (
     <>
       <Background />
@@ -71,7 +75,12 @@ const RoomClient = ({ code }: IRoomClientProps) => {
         handleCopyLink={handleCopyLink}
         handleLikeTrack={handleLikeTrack}
       />
-      <SearchModal isOpen={isOpen} handleOpen={handleModal} />
+      <SearchModal
+        isOpen={isOpen}
+        handleOpen={handleModal}
+        tracks={tracks}
+        handleAddTrack={handleAddTrack}
+      />
     </>
   );
 };
