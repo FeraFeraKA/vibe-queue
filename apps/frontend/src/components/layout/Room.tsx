@@ -28,7 +28,7 @@ const Room = ({
 }: IRoom) => {
   return (
     <>
-      <div className="flex flex-col w-full max-w-5xl min-h-[calc(100vh-80px)] mx-auto z-10 relative px-4">
+      <div className="flex flex-col w-full max-w-5xl 2xl:max-w-7xl min-h-[calc(100vh-80px)] mx-auto z-10 relative px-4">
         <main className="mt-4 flex flex-1 flex-col">
           <section className="flex justify-between items-center">
             <div className="flex flex-col gap-4">
@@ -38,7 +38,11 @@ const Room = ({
               <p className="text-3xl font-bold">Vibe Queue #{code}</p>
             </div>
             <div className="flex flex-col gap-4">
-              <Button variant="outline" onClick={handleCopyLink} className="shadow-2xl">
+              <Button
+                variant="outline"
+                onClick={handleCopyLink}
+                className="shadow-2xl"
+              >
                 {isCopied ? (
                   <>
                     <Check />
@@ -52,7 +56,11 @@ const Room = ({
                 )}
               </Button>
 
-              <Button variant="outline" onClick={() => handleOpen(true)} className="shadow-2xl">
+              <Button
+                variant="outline"
+                onClick={() => handleOpen(true)}
+                className="shadow-2xl"
+              >
                 <Search />
                 Search Tracks
               </Button>

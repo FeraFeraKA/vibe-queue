@@ -33,7 +33,7 @@ const SearchModal = ({
       <CommandDialog
         open={isOpen}
         onOpenChange={handleOpen}
-        className="max-w-248! w-[calc(100vw-32px)] top-35"
+        className="max-w-248! 2xl:max-w-312! w-[calc(100vw-32px)] top-35"
       >
         <Command>
           <CommandInput placeholder="Type to search tracks..." />
