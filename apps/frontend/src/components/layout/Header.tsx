@@ -5,7 +5,7 @@ import { ThemeToggle } from "./ThemeToggle";
 const Header = () => {
   return (
     <>
-      <header className="max-w-5xl w-full mx-auto z-10 relative px-4">
+      <header className="max-w-5xl 2xl:max-w-7xl w-full mx-auto z-10 relative px-4">
         <div
           className="flex h-16 items-center justify-between
           border rounded-2xl my-2 px-3 bg-white/50 border-black/10

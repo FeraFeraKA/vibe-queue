@@ -21,9 +21,9 @@ import {
 export class RoomsService {
   private readonly rooms = new Map<TCode, IRoom>([
     [
-      'DEMO',
+      'demo',
       {
-        code: 'DEMO',
+        code: 'demo',
         users: [],
         nowPlaying: null,
         queue: [],
