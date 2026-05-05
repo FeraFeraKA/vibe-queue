@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
-import type { TCode, TNickname } from './rooms.types';
+import type { ISearchTrack, TCode, TNickname } from './rooms.types';
 
-@Controller('rooms')
+@Controller('room')
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
@@ -19,5 +19,10 @@ export class RoomsController {
   @Patch(':code/join')
   joinRoom(@Param('code') code: TCode, @Body('nickname') nickname: TNickname) {
     return this.roomsService.joinRoom({ code, nickname });
+  }
+
+  @Patch(':code/tracks')
+  addTrack(@Param('code') code: TCode, @Body('track') track: ISearchTrack) {
+    return this.roomsService.addTrack({ code, track });
   }
 }

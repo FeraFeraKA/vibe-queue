@@ -3,8 +3,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { normalizeData } from '../helpers/normalizeData';
-import { IActionsRoom, IRoom, TCode } from './rooms.types';
+import {
+  normalizeAddTrackData,
+  normalizeCode,
+  normalizeRoomActionsData,
+} from '../helpers/normalizeData';
+import { IActionsRoom, IAddTrack, IRoom, TCode } from './rooms.types';
 
 @Injectable()
 export class RoomsService {
@@ -21,7 +25,9 @@ export class RoomsService {
   ]);
 
   findRoom(code: TCode) {
-    const room = this.rooms.get(code);
+    const normalizedCode = normalizeCode(code);
+
+    const room = this.rooms.get(normalizedCode);
 
     if (!room) throw new NotFoundException(`Room with code ${code} not found`);
 
@@ -29,14 +35,14 @@ export class RoomsService {
   }
 
   createRoom(data: IActionsRoom) {
-    const { code, nickname } = normalizeData(data);
+    const { code, user } = normalizeRoomActionsData(data);
 
     if (this.rooms.has(code))
       throw new BadRequestException(`Room with code ${code} already exists`);
 
     const room = {
       code,
-      users: [nickname],
+      users: [user],
       nowPlaying: null,
       queue: [],
     };
@@ -47,16 +53,31 @@ export class RoomsService {
   }
 
   joinRoom(data: IActionsRoom) {
-    const { code, nickname } = normalizeData(data);
+    const { code, user } = normalizeRoomActionsData(data);
 
     const room = this.findRoom(code);
 
-    if (room.users.includes(nickname))
-      throw new BadRequestException(`Nickname ${nickname} already taken`);
+    if (room.users.some((us) => us.nickname === user.nickname))
+      throw new BadRequestException(`Nickname ${user.nickname} already taken`);
 
     const newRoom = {
       ...room,
-      users: [...room.users, nickname],
+      users: [...room.users, user],
+    };
+
+    this.rooms.set(code, newRoom);
+
+    return newRoom;
+  }
+
+  addTrack(data: IAddTrack) {
+    const { code, track } = normalizeAddTrackData(data);
+
+    const room = this.findRoom(code);
+
+    const newRoom = {
+      ...room,
+      queue: [...room.queue, track],
     };
 
     this.rooms.set(code, newRoom);
