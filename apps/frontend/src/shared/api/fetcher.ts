@@ -1,4 +1,5 @@
 import { ApiError } from "next/dist/server/api-utils";
+import { API_URL } from "./config";
 
 type TFetcherActions = "GET" | "POST" | "PATCH" | "DELETE";
 
@@ -8,11 +9,14 @@ interface IFetcherParams {
   body?: unknown;
 }
 
-const fetcher = async ({ url, method, body = null }: IFetcherParams) => {
+export const fetcher = async ({ url, method, body = null }: IFetcherParams) => {
   try {
-    const response = await fetch(url, {
+    const response = await fetch(`${API_URL}${url}`, {
       method,
       body: body === undefined ? undefined : JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.ok) throw new ApiError(400, "BAD_REQUEST");
