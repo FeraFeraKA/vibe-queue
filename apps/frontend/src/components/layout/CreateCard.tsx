@@ -1,5 +1,8 @@
 "use client";
 
+import { FRONT_URL } from "@/shared/api/config";
+import { fetcher } from "@/shared/api/fetcher";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import {
@@ -16,13 +19,23 @@ import { Label } from "../ui/label";
 const CreateCard = () => {
   const [code, setCode] = useState("");
   const [nickname, setNickname] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    // Handle form submission
 
-    setCode("");
-    setNickname("");
+    fetcher({
+      url: `/room`,
+      method: "POST",
+      body: {
+        code,
+        nickname,
+      },
+    }).then(() => {
+      router.push(`${FRONT_URL}/room/${code}`);
+      setCode("");
+      setNickname("");
+    });
   };
 
   return (
