@@ -1,7 +1,5 @@
 "use client";
 
-import Background from "@/components/layout/Background";
-import Header from "@/components/layout/Header";
 import Room from "@/components/layout/Room";
 import SearchModal from "@/components/layout/SearchModal";
 import { IMockTracks, mockSearchTracks, mockUsers } from "@/mock";
@@ -64,8 +62,6 @@ const RoomClient = ({ code }: IRoomClientProps) => {
 
   return (
     <>
-      <Background />
-      <Header />
       <Room
         code={code}
         tracks={sortedTracks}

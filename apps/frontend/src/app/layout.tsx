@@ -1,3 +1,5 @@
+import Background from "@/components/layout/Background";
+import Header from "@/components/layout/Header";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
@@ -40,7 +42,11 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <Background />
+          <Header />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
