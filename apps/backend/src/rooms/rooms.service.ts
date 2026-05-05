@@ -7,8 +7,15 @@ import {
   normalizeAddTrackData,
   normalizeCode,
   normalizeRoomActionsData,
+  normalizeVoteTrackData,
 } from '../helpers/normalizeData';
-import { IActionsRoom, IAddTrack, IRoom, TCode } from './rooms.types';
+import {
+  IActionsRoom,
+  IAddTrack,
+  IRoom,
+  IVoteTrack,
+  TCode,
+} from './rooms.types';
 
 @Injectable()
 export class RoomsService {
@@ -83,5 +90,40 @@ export class RoomsService {
     this.rooms.set(code, newRoom);
 
     return newRoom;
+  }
+
+  voteTrack(data: IVoteTrack) {
+    const { code, queueId, nickname } = normalizeVoteTrackData(data);
+
+    const room = this.findRoom(code);
+
+    const track = room.queue.find((track) => track.queueId === queueId);
+
+    if (!track) throw new NotFoundException('Cannot find track');
+
+    const user = room.users.find((user) => user.nickname === nickname);
+
+    if (!user) throw new NotFoundException('Cannot find user');
+
+    const userLike = track.likedBy.find((us) => us.id === user.id);
+
+    const newTrack = {
+      ...track,
+      votes: userLike ? track.votes - 1 : track.votes + 1,
+      likedBy: userLike
+        ? [...track.likedBy.filter((us) => us.id !== user.id)]
+        : [...track.likedBy, user],
+    };
+
+    const newRoom = {
+      ...room,
+      queue: room.queue.map((track) =>
+        track.queueId === queueId ? newTrack : track,
+      ),
+    };
+
+    this.rooms.set(code, newRoom);
+
+    return newTrack;
   }
 }

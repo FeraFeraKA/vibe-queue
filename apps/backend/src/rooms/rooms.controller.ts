@@ -25,4 +25,13 @@ export class RoomsController {
   addTrack(@Param('code') code: TCode, @Body('track') track: ISearchTrack) {
     return this.roomsService.addTrack({ code, track });
   }
+
+  @Patch(':code/tracks/:queueId/vote')
+  voteTrack(
+    @Param('code') code: TCode,
+    @Param('queueId') queueId: string,
+    @Body('nickname') nickname: TNickname,
+  ) {
+    return this.roomsService.voteTrack({ code, queueId, nickname });
+  }
 }

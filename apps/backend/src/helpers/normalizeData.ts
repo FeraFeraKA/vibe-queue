@@ -3,6 +3,7 @@ import {
   IActionsRoom,
   IAddTrack,
   ISearchTrack,
+  IVoteTrack,
   TCode,
   TNickname,
 } from '../rooms/rooms.types';
@@ -33,6 +34,17 @@ const normalizeNickname = (nickname: TNickname) => {
   return normalizedNickname;
 };
 
+const normalizeUser = (nickname: TNickname) => {
+  const normalizedNickname = normalizeNickname(nickname);
+
+  const user = {
+    id: crypto.randomUUID(),
+    nickname: normalizedNickname,
+  };
+
+  return user;
+};
+
 const normalizeTrack = (track: ISearchTrack) => {
   const normalizedTrack = {
     ...track,
@@ -46,16 +58,11 @@ const normalizeTrack = (track: ISearchTrack) => {
 
 export const normalizeRoomActionsData = ({ code, nickname }: IActionsRoom) => {
   const normalizedCode = normalizeCode(code);
-  const normalizedNickname = normalizeNickname(nickname);
-
-  const user = {
-    id: crypto.randomUUID(),
-    nickname: normalizedNickname,
-  };
+  const normalizedUser = normalizeUser(nickname);
 
   return {
     code: normalizedCode,
-    user,
+    user: normalizedUser,
   };
 };
 
@@ -64,4 +71,15 @@ export const normalizeAddTrackData = ({ code, track }: IAddTrack) => {
   const normalizedTrack = normalizeTrack(track);
 
   return { code: normalizedCode, track: normalizedTrack };
+};
+
+export const normalizeVoteTrackData = ({
+  code,
+  queueId,
+  nickname,
+}: IVoteTrack) => {
+  const normalizedCode = normalizeCode(code);
+  const normalizedNickname = normalizeNickname(nickname);
+
+  return { code: normalizedCode, queueId, nickname: normalizedNickname };
 };

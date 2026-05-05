@@ -2,6 +2,8 @@ export type TCode = string;
 
 export type TNickname = string;
 
+export type TId = string;
+
 export interface IRoom {
   code: TCode;
   users: IUser[];
@@ -19,11 +21,17 @@ export interface IAddTrack {
   track: ISearchTrack;
 }
 
+export interface IVoteTrack {
+  code: TCode;
+  queueId: TId;
+  nickname: TNickname;
+}
+
 export type TProvider = 'spotify' | 'mock';
 
 export interface ISearchTrack {
   provider: TProvider;
-  providerTrackId: string;
+  providerTrackId: TId;
   title: string;
   artistText: string;
   albumName: string;
@@ -34,12 +42,12 @@ export interface ISearchTrack {
 }
 
 export interface ITrack extends ISearchTrack {
-  queueId: string;
+  queueId: TId;
   votes: number;
   likedBy: IUser[];
 }
 
 export interface IUser {
-  id: string;
+  id: TId;
   nickname: TNickname;
 }
