@@ -126,4 +126,24 @@ export class RoomsService {
 
     return newTrack;
   }
+
+  setPlaying(data: Omit<IVoteTrack, 'nickname'>) {
+    const normalizedCode = normalizeCode(data.code);
+
+    const room = this.findRoom(normalizedCode);
+
+    const track = room.queue.find((track) => track.queueId === data.queueId);
+
+    if (!track) throw new NotFoundException('Track not found');
+
+    const newRoom = {
+      ...room,
+      queue: [...room.queue.filter((track) => track.queueId !== data.queueId)],
+      nowPlaying: track,
+    };
+
+    this.rooms.set(normalizedCode, newRoom);
+
+    return newRoom;
+  }
 }

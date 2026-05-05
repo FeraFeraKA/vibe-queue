@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
-import type { ISearchTrack, TCode, TNickname } from './rooms.types';
+import type { ISearchTrack, TCode, TId, TNickname } from './rooms.types';
 
 @Controller('room')
 export class RoomsController {
@@ -29,9 +29,14 @@ export class RoomsController {
   @Patch(':code/tracks/:queueId/vote')
   voteTrack(
     @Param('code') code: TCode,
-    @Param('queueId') queueId: string,
+    @Param('queueId') queueId: TId,
     @Body('nickname') nickname: TNickname,
   ) {
     return this.roomsService.voteTrack({ code, queueId, nickname });
+  }
+
+  @Patch(':code/tracks/:queueId/set-playing')
+  setPlaying(@Param('code') code: TCode, @Param('queueId') queueId: TId) {
+    return this.roomsService.setPlaying({ code, queueId });
   }
 }
