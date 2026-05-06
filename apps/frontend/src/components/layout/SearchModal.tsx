@@ -1,6 +1,6 @@
 "use client";
 
-import { IMockTracks } from "@/mock";
+import type { ISearchTrack } from "@vibe-queue/shared";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
@@ -17,9 +17,9 @@ import {
 
 interface ISearchModalProps {
   isOpen: boolean;
-  tracks: IMockTracks[];
+  tracks: ISearchTrack[];
   handleOpen: (flag: boolean) => void;
-  handleAddTrack: (track: IMockTracks) => void;
+  handleAddTrack: (track: ISearchTrack) => void;
 }
 
 const SearchModal = ({
@@ -40,7 +40,7 @@ const SearchModal = ({
           <CommandList className="max-h-[calc(100vh-320px)]">
             <CommandEmpty>No results found.</CommandEmpty>
             {tracks.map((track) => (
-              <CommandGroup key={track.spotifyId} heading={track.title}>
+              <CommandGroup key={track.providerTrackId} heading={track.title}>
                 <CommandItem className="flex justify-between">
                   <div className="flex items-center gap-4">
                     <Image

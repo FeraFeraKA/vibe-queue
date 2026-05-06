@@ -10,12 +10,14 @@ import {
   normalizeVoteTrackData,
 } from '../helpers/normalizeData';
 import {
-  IActionsRoom,
-  IAddTrack,
+  IAddTrackPayload,
+  ICreateRoomPayload,
+  IJoinRoomPayload,
   IRoom,
-  IVoteTrack,
+  ISetPlayingPayload,
+  IVoteTrackPayload,
   TCode,
-} from './rooms.types';
+} from '@vibe-queue/shared';
 
 @Injectable()
 export class RoomsService {
@@ -41,7 +43,7 @@ export class RoomsService {
     return room;
   }
 
-  createRoom(data: IActionsRoom) {
+  createRoom(data: ICreateRoomPayload) {
     const { code, user } = normalizeRoomActionsData(data);
 
     if (this.rooms.has(code))
@@ -59,7 +61,7 @@ export class RoomsService {
     return room;
   }
 
-  joinRoom(data: IActionsRoom) {
+  joinRoom(data: IJoinRoomPayload) {
     const { code, user } = normalizeRoomActionsData(data);
 
     const room = this.findRoom(code);
@@ -77,7 +79,7 @@ export class RoomsService {
     return newRoom;
   }
 
-  addTrack(data: IAddTrack) {
+  addTrack(data: IAddTrackPayload) {
     const { code, track } = normalizeAddTrackData(data);
 
     const room = this.findRoom(code);
@@ -92,7 +94,7 @@ export class RoomsService {
     return newRoom;
   }
 
-  voteTrack(data: IVoteTrack) {
+  voteTrack(data: IVoteTrackPayload) {
     const { code, queueId, nickname } = normalizeVoteTrackData(data);
 
     const room = this.findRoom(code);
@@ -127,7 +129,7 @@ export class RoomsService {
     return newTrack;
   }
 
-  setPlaying(data: Omit<IVoteTrack, 'nickname'>) {
+  setPlaying(data: ISetPlayingPayload) {
     const normalizedCode = normalizeCode(data.code);
 
     const room = this.findRoom(normalizedCode);

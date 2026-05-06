@@ -35,7 +35,7 @@ const CreateCard = () => {
 
       router.push(`/room/${room.code}`);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

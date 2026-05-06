@@ -1,20 +1,20 @@
 "use client";
 
-import { IMockTracks } from "@/mock";
 import { Check, Copy, Search } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import QueueList from "../ui/QueueList";
 import Users from "../ui/Users";
+import type { ITrack, IUser } from "@vibe-queue/shared";
 
-interface IRoom {
+interface IRoomProps {
   code: string;
-  tracks: IMockTracks[];
-  users: string[];
+  tracks: ITrack[];
+  users: IUser[];
   isCopied: boolean;
   handleOpen: (flag: boolean) => void;
   handleCopyLink: () => Promise<void>;
-  handleLikeTrack: (spotifyId: string) => void;
+  handleLikeTrack: (queueId: string) => void;
 }
 
 const Room = ({
@@ -25,7 +25,7 @@ const Room = ({
   handleOpen,
   handleCopyLink,
   handleLikeTrack,
-}: IRoom) => {
+}: IRoomProps) => {
   return (
     <>
       <div className="flex flex-col w-full max-w-5xl 2xl:max-w-7xl min-h-[calc(100vh-80px)] mx-auto z-10 relative px-4">

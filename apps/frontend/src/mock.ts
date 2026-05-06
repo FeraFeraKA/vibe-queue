@@ -1,21 +1,7 @@
-export interface IMockTracks {
-  spotifyId: string;
-  provider: "spotify" | "mock";
-  providerTrackId: string;
-  title: string;
-  artistText: string;
-  albumName: string;
-  coverUrl: string;
-  durationMs: number;
-  providerUrl: string;
-  explicit: boolean;
-  votes: number;
-  liked: boolean;
-}
+import type { ISearchTrack, ITrack, IUser } from "@vibe-queue/shared";
 
 export const mockSearchTracks = [
   {
-    spotifyId: "track-abracadabra",
     provider: "spotify",
     providerTrackId: "track-abracadabra",
     title: "Abracadabra",
@@ -26,16 +12,23 @@ export const mockSearchTracks = [
     durationMs: 223000,
     providerUrl: "https://open.spotify.com/track/track-abracadabra",
     explicit: false,
-    votes: 0,
-    liked: false,
   },
-] satisfies IMockTracks[];
+] satisfies ISearchTrack[];
+
+export const mockQueueTracks = [
+  {
+    ...mockSearchTracks[0],
+    queueId: "queue-abracadabra",
+    votes: 0,
+    likedBy: [],
+  },
+] satisfies ITrack[];
 
 export const mockUsers = [
-  "Fera",
-  "Tenderly__",
-  "Setr1ox",
-  "Mydei",
-  "Boothill",
-  "Itto",
-];
+  { id: "user-fera", nickname: "Fera" },
+  { id: "user-tenderly", nickname: "Tenderly__" },
+  { id: "user-setr1ox", nickname: "Setr1ox" },
+  { id: "user-mydei", nickname: "Mydei" },
+  { id: "user-boothill", nickname: "Boothill" },
+  { id: "user-itto", nickname: "Itto" },
+] satisfies IUser[];

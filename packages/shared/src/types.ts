@@ -11,20 +11,30 @@ export interface IRoom {
   queue: ITrack[];
 }
 
-export interface IActionsRoom {
+export interface ICreateRoomPayload {
   code: TCode;
   nickname: TNickname;
 }
 
-export interface IAddTrack {
+export interface IJoinRoomPayload {
+  code: TCode;
+  nickname: TNickname;
+}
+
+export interface IAddTrackPayload {
   code: TCode;
   track: ISearchTrack;
 }
 
-export interface IVoteTrack {
+export interface IVoteTrackPayload {
   code: TCode;
   queueId: TId;
   nickname: TNickname;
+}
+
+export interface ISetPlayingPayload {
+  code: TCode;
+  queueId: TId;
 }
 
 export type TProvider = 'spotify' | 'mock';

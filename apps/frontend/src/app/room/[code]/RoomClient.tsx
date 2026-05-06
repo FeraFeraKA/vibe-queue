@@ -2,7 +2,9 @@
 
 import Room from "@/components/layout/Room";
 import SearchModal from "@/components/layout/SearchModal";
-import { IMockTracks, mockSearchTracks, mockUsers } from "@/mock";
+import { mockQueueTracks, mockSearchTracks, mockUsers } from "@/mock";
+import { fetcher } from "@/shared/api/fetcher";
+import type { IRoom, ISearchTrack, ITrack, IUser } from "@vibe-queue/shared";
 import { usePathname } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 
@@ -15,8 +17,9 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   const pathname = usePathname();
   const [isCopied, setIsCopied] = useState(false);
   const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [tracks, setTracks] = useState<IMockTracks[]>(mockSearchTracks);
-  const [users, setUsers] = useState<string[]>(mockUsers);
+  const [tracks, setTracks] = useState<ITrack[]>(mockQueueTracks);
+  const [searchTracks] = useState<ISearchTrack[]>(mockSearchTracks);
+  const [users] = useState<IUser[]>(mockUsers);
 
   const sortedTracks = useMemo(() => {
     return [...tracks].sort((a, b) => b.votes - a.votes);
@@ -42,22 +45,36 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     setIsOpen(flag);
   };
 
-  const handleLikeTrack = (spotifyId: string) => {
+  const handleLikeTrack = (queueId: string) => {
     setTracks((prevTracks) =>
       prevTracks.map((track) =>
-        track.spotifyId === spotifyId
+        track.queueId === queueId
           ? {
               ...track,
-              liked: !track.liked,
-              votes: track.liked ? track.votes - 1 : track.votes + 1,
+              votes:
+                track.likedBy.length > 0 ? track.votes - 1 : track.votes + 1,
+              likedBy:
+                track.likedBy.length > 0
+                  ? []
+                  : [{ id: "user-fera", nickname: "Fera" }],
             }
           : track,
       ),
     );
   };
 
-  const handleAddTrack = (track: IMockTracks) => {
-    setTracks((prevTracks) => [...prevTracks, track]);
+  const handleAddTrack = async (track: ISearchTrack) => {
+    try {
+      const room = (await fetcher({
+        url: `/room/${code}/tracks`,
+        method: "PATCH",
+        body: { track },
+      })) as IRoom;
+
+      setTracks(room.queue);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -74,7 +91,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
       <SearchModal
         isOpen={isOpen}
         handleOpen={handleModal}
-        tracks={tracks}
+        tracks={searchTracks}
         handleAddTrack={handleAddTrack}
       />
     </>

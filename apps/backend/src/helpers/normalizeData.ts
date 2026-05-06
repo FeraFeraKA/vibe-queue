@@ -1,12 +1,14 @@
 import { BadRequestException } from '@nestjs/common';
-import {
-  IActionsRoom,
-  IAddTrack,
+import type {
+  IAddTrackPayload,
+  ICreateRoomPayload,
+  IJoinRoomPayload,
   ISearchTrack,
-  IVoteTrack,
+  ITrack,
+  IVoteTrackPayload,
   TCode,
   TNickname,
-} from '../rooms/rooms.types';
+} from '@vibe-queue/shared';
 
 export const normalizeCode = (code: TCode) => {
   const normalizedCode = code.trim().toLowerCase();
@@ -45,7 +47,7 @@ const normalizeUser = (nickname: TNickname) => {
   return user;
 };
 
-const normalizeTrack = (track: ISearchTrack) => {
+const normalizeTrack = (track: ISearchTrack): ITrack => {
   const normalizedTrack = {
     ...track,
     queueId: crypto.randomUUID(),
@@ -56,7 +58,10 @@ const normalizeTrack = (track: ISearchTrack) => {
   return normalizedTrack;
 };
 
-export const normalizeRoomActionsData = ({ code, nickname }: IActionsRoom) => {
+export const normalizeRoomActionsData = ({
+  code,
+  nickname,
+}: ICreateRoomPayload | IJoinRoomPayload) => {
   const normalizedCode = normalizeCode(code);
   const normalizedUser = normalizeUser(nickname);
 
@@ -66,7 +71,7 @@ export const normalizeRoomActionsData = ({ code, nickname }: IActionsRoom) => {
   };
 };
 
-export const normalizeAddTrackData = ({ code, track }: IAddTrack) => {
+export const normalizeAddTrackData = ({ code, track }: IAddTrackPayload) => {
   const normalizedCode = normalizeCode(code);
   const normalizedTrack = normalizeTrack(track);
 
@@ -77,7 +82,7 @@ export const normalizeVoteTrackData = ({
   code,
   queueId,
   nickname,
-}: IVoteTrack) => {
+}: IVoteTrackPayload) => {
   const normalizedCode = normalizeCode(code);
   const normalizedNickname = normalizeNickname(nickname);
 

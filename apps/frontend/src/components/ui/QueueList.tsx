@@ -1,6 +1,6 @@
 "use client";
 
-import { IMockTracks } from "@/mock";
+import type { ITrack } from "@vibe-queue/shared";
 import { Heart } from "lucide-react";
 import { LayoutGroup, motion } from "motion/react";
 import Image from "next/image";
@@ -8,8 +8,8 @@ import { Button } from "./button";
 import { ScrollArea } from "./scroll-area";
 
 interface IQueueListProps {
-  tracks: IMockTracks[];
-  handleLikeTrack: (spotifyId: string) => void;
+  tracks: ITrack[];
+  handleLikeTrack: (queueId: string) => void;
 }
 
 const QueueList = ({ tracks, handleLikeTrack }: IQueueListProps) => {
@@ -19,7 +19,7 @@ const QueueList = ({ tracks, handleLikeTrack }: IQueueListProps) => {
         <div className="flex flex-col items-start max-h-150 gap-4">
           {tracks.map((item) => (
             <motion.div
-              key={item.spotifyId}
+              key={item.queueId}
               layout
               transition={{
                 layout: {
@@ -46,10 +46,14 @@ const QueueList = ({ tracks, handleLikeTrack }: IQueueListProps) => {
                 <Button
                   variant="outline"
                   className="rounded-full"
-                  onClick={() => handleLikeTrack(item.spotifyId)}
+                  onClick={() => handleLikeTrack(item.queueId)}
                 >
                   <Heart
-                    className={item.liked ? "fill-red-500 text-red-500" : ""}
+                    className={
+                      item.likedBy.length > 0
+                        ? "fill-red-500 text-red-500"
+                        : ""
+                    }
                   />
                   {item.votes}
                 </Button>

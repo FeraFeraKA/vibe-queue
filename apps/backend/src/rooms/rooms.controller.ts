@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import type { ISearchTrack, TCode, TId, TNickname } from '@vibe-queue/shared';
 import { RoomsService } from './rooms.service';
-import type { ISearchTrack, TCode, TId, TNickname } from './rooms.types';
 
 @Controller('room')
 export class RoomsController {

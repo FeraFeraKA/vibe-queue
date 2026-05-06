@@ -1,4 +1,4 @@
-import { ISearchTrack } from './rooms/rooms.types';
+import type { ISearchTrack } from '@vibe-queue/shared';
 
 export const mockSearchTracks = [
   {
