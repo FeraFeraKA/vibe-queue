@@ -65,11 +65,11 @@ const RoomClient = ({ code }: IRoomClientProps) => {
 
   const handleAddTrack = async (track: ISearchTrack) => {
     try {
-      const room = (await fetcher({
+      const room = await fetcher<IRoom>({
         url: `/room/${code}/tracks`,
         method: "PATCH",
         body: { track },
-      })) as IRoom;
+      });
 
       setTracks(room.queue);
     } catch (error) {

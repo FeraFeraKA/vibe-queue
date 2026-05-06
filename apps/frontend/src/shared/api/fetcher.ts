@@ -9,7 +9,7 @@ interface IFetcherParams {
   body?: unknown;
 }
 
-export const fetcher = async ({ url, method, body = null }: IFetcherParams) => {
+export const fetcher = async <T>({ url, method, body = null }: IFetcherParams): Promise<T> => {
   try {
     const response = await fetch(`${API_URL}${url}`, {
       method,

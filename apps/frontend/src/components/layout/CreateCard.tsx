@@ -1,6 +1,7 @@
 "use client";
 
 import { fetcher } from "@/shared/api/fetcher";
+import { IRoom } from "@vibe-queue/shared";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
@@ -24,7 +25,7 @@ const CreateCard = () => {
     e.preventDefault();
 
     try {
-      const room = await fetcher({
+      const room = await fetcher<IRoom>({
         url: `/room`,
         method: "POST",
         body: {
