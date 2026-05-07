@@ -5,7 +5,7 @@ import SearchModal from "@/components/layout/SearchModal";
 import { mockSearchTracks } from "@/mock";
 import { fetcher } from "@/shared/api/fetcher";
 import { getCurrentRoomUser } from "@/shared/helpers/saveSession";
-import type { IRoom, ISearchTrack, ITrack, IUser } from "@vibe-queue/shared";
+import type { IRoom, ISearchTrack, IUser } from "@vibe-queue/shared";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -14,14 +14,13 @@ interface IRoomClientProps {
 }
 
 const RoomClient = ({ code }: IRoomClientProps) => {
+  const [room, setRoom] = useState<IRoom | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const [isCopied, setIsCopied] = useState(false);
   const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [tracks, setTracks] = useState<ITrack[]>([]);
   const [searchTracks, setSearchTracks] =
     useState<ISearchTrack[]>(mockSearchTracks);
-  const [users, setUsers] = useState<IUser[]>([]);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
   useEffect(() => {
@@ -32,8 +31,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
           method: "GET",
         });
 
-        setTracks(room.queue);
-        setUsers(room.users);
+        setRoom(room);
         setCurrentUser(getCurrentRoomUser(room.code));
       } catch (error) {
         console.error(error);
@@ -44,8 +42,8 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   }, [code]);
 
   const sortedTracks = useMemo(() => {
-    return [...tracks].sort((a, b) => b.votes - a.votes);
-  }, [tracks]);
+    return [...(room?.queue ?? [])].sort((a, b) => b.votes - a.votes);
+  }, [room?.queue]);
 
   const handleCopyLink = async () => {
     const url = `${window.location.origin}${pathname}`;
@@ -67,22 +65,20 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     setIsOpen(flag);
   };
 
-  const handleLikeTrack = (queueId: string) => {
-    setTracks((prevTracks) =>
-      prevTracks.map((track) =>
-        track.queueId === queueId
-          ? {
-              ...track,
-              votes:
-                track.likedBy.length > 0 ? track.votes - 1 : track.votes + 1,
-              likedBy:
-                track.likedBy.length > 0
-                  ? []
-                  : [{ id: "user-fera", nickname: "Fera" }],
-            }
-          : track,
-      ),
-    );
+  const handleLikeTrack = async (queueId: string) => {
+    if (!currentUser) return;
+
+    try {
+      const room = await fetcher<IRoom>({
+        url: `/room/${code}/tracks/${queueId}/vote`,
+        method: "PATCH",
+        body: { nickname: currentUser.nickname },
+      });
+
+      setRoom(room);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleAddTrack = async (track: ISearchTrack) => {
@@ -93,7 +89,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
         body: { track },
       });
 
-      setTracks(room.queue);
+      setRoom(room);
     } catch (error) {
       console.error(error);
     }
@@ -104,7 +100,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
       <Room
         code={code}
         tracks={sortedTracks}
-        users={users}
+        users={room?.users ?? []}
         isCopied={isCopied}
         handleOpen={handleModal}
         handleCopyLink={handleCopyLink}
