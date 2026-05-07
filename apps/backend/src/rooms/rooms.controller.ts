@@ -26,6 +26,11 @@ export class RoomsController {
     return this.roomsService.addTrack({ code, track });
   }
 
+  @Patch(':code/tracks/:queueId/delete')
+  deleteTrack(@Param('code') code: TCode, @Param('queueId') queueId: TId) {
+    return this.roomsService.deleteTrack({ code, queueId });
+  }
+
   @Patch(':code/tracks/:queueId/vote')
   voteTrack(
     @Param('code') code: TCode,

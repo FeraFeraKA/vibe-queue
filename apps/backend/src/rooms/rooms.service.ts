@@ -4,20 +4,21 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
-  normalizeAddTrackData,
-  normalizeCode,
-  normalizeRoomActionsData,
-  normalizeVoteTrackData,
-} from '../helpers/normalizeData';
-import {
   IAddTrackPayload,
   ICreateRoomPayload,
+  IDeleteTrackPayload,
   IJoinRoomPayload,
   IRoom,
   ISetPlayingPayload,
   IVoteTrackPayload,
   TCode,
 } from '@vibe-queue/shared';
+import {
+  normalizeAddTrackData,
+  normalizeCode,
+  normalizeRoomActionsData,
+  normalizeVoteTrackData,
+} from '../helpers/normalizeData';
 
 @Injectable()
 export class RoomsService {
@@ -58,7 +59,7 @@ export class RoomsService {
 
     this.rooms.set(code, room);
 
-    return room;
+    return { room, user };
   }
 
   joinRoom(data: IJoinRoomPayload) {
@@ -76,7 +77,7 @@ export class RoomsService {
 
     this.rooms.set(code, newRoom);
 
-    return newRoom;
+    return { room: newRoom, user };
   }
 
   addTrack(data: IAddTrackPayload) {
@@ -90,6 +91,19 @@ export class RoomsService {
     };
 
     this.rooms.set(code, newRoom);
+
+    return newRoom;
+  }
+
+  deleteTrack(data: IDeleteTrackPayload) {
+    const normalizedCode = normalizeCode(data.code);
+
+    const room = this.findRoom(normalizedCode);
+
+    const newRoom = {
+      ...room,
+      queue: [...room.queue.filter((track) => track.queueId !== data.queueId)],
+    };
 
     return newRoom;
   }
@@ -126,7 +140,7 @@ export class RoomsService {
 
     this.rooms.set(code, newRoom);
 
-    return newTrack;
+    return newRoom;
   }
 
   setPlaying(data: ISetPlayingPayload) {
