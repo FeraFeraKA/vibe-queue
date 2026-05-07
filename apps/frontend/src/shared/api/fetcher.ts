@@ -1,4 +1,4 @@
-import { ApiError } from "@/lib/ApiError";
+import { ApiError } from "@/shared/helpers/ApiError";
 import { API_URL } from "./config";
 
 type TFetcherActions = "GET" | "POST" | "PATCH" | "DELETE";
