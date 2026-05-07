@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import type { ISearchTrack, TCode, TId, TNickname } from '@vibe-queue/shared';
 import { RoomsService } from './rooms.service';
 
@@ -26,7 +34,7 @@ export class RoomsController {
     return this.roomsService.addTrack({ code, track });
   }
 
-  @Patch(':code/tracks/:queueId/delete')
+  @Delete(':code/tracks/:queueId/delete')
   deleteTrack(@Param('code') code: TCode, @Param('queueId') queueId: TId) {
     return this.roomsService.deleteTrack({ code, queueId });
   }

@@ -105,6 +105,8 @@ export class RoomsService {
       queue: [...room.queue.filter((track) => track.queueId !== data.queueId)],
     };
 
+    this.rooms.set(normalizedCode, newRoom);
+
     return newRoom;
   }
 
