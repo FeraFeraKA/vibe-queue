@@ -102,7 +102,7 @@ export class RoomsService {
 
     const newRoom = {
       ...room,
-      queue: [...room.queue.filter((track) => track.queueId !== data.queueId)],
+      queue: room.queue.filter((track) => track.queueId !== data.queueId),
     };
 
     this.rooms.set(normalizedCode, newRoom);
@@ -129,7 +129,7 @@ export class RoomsService {
       ...track,
       votes: userLike ? track.votes - 1 : track.votes + 1,
       likedBy: userLike
-        ? [...track.likedBy.filter((us) => us.id !== user.id)]
+        ? track.likedBy.filter((us) => us.id !== user.id)
         : [...track.likedBy, user],
     };
 
@@ -156,7 +156,7 @@ export class RoomsService {
 
     const newRoom = {
       ...room,
-      queue: [...room.queue.filter((track) => track.queueId !== data.queueId)],
+      queue: room.queue.filter((track) => track.queueId !== data.queueId),
       nowPlaying: track,
     };
 
