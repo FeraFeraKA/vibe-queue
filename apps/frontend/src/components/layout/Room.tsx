@@ -10,23 +10,27 @@ import Users from "../ui/Users";
 interface IRoomProps {
   code: string;
   tracks: ITrack[];
+  nowPlaying?: ITrack | null;
   users: IUser[];
   isCopied: boolean;
   handleOpen: (flag: boolean) => void;
   handleCopyLink: () => Promise<void>;
   handleDeleteTrack: (queueId: string) => void;
   handleLikeTrack: (queueId: string) => void;
+  handleSetPlaying: (queueId: string) => void;
 }
 
 const Room = ({
   code,
   tracks,
+  nowPlaying,
   users,
   isCopied,
   handleOpen,
   handleCopyLink,
   handleDeleteTrack,
   handleLikeTrack,
+  handleSetPlaying,
 }: IRoomProps) => {
   return (
     <>
@@ -80,12 +84,20 @@ const Room = ({
                   className="rounded-3xl"
                 />
                 <div className="mx-auto text-center max-w-75">
-                  <p className="text-3xl font-bold mt-4 md:mt-0">
-                    Blinding Lights
-                  </p>
-                  <p className="text-lg text-muted-foreground mt-1">
-                    The Weeknd
-                  </p>
+                  {nowPlaying ? (
+                    <>
+                      <p className="text-3xl font-bold mt-4 md:mt-0">
+                        {nowPlaying.title}
+                      </p>
+                      <p className="text-lg text-muted-foreground mt-1">
+                        {nowPlaying.artistText}
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-3xl font-bold mt-4 md:mt-0">
+                      No track is playing
+                    </p>
+                  )}
                 </div>
               </div>
               <p className="text-muted-foreground mt-6">Queue</p>
@@ -93,6 +105,7 @@ const Room = ({
                 tracks={tracks}
                 handleDeleteTrack={handleDeleteTrack}
                 handleLikeTrack={handleLikeTrack}
+                handleSetPlaying={handleSetPlaying}
               />
             </div>
             <div className="min-h-80 lg:col-span-3 lg:h-full border rounded-3xl bg-[#d5d5d5] dark:bg-[#171717] p-6 shadow-xl">

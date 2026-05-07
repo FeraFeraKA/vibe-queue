@@ -23,6 +23,14 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     useState<ISearchTrack[]>(mockSearchTracks);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
+  const sortedTracks = useMemo(() => {
+    return [...(room?.queue ?? [])].sort((a, b) => b.votes - a.votes);
+  }, [room?.queue]);
+
+  const nowPlaying = useMemo(() => {
+    return room?.nowPlaying;
+  }, [room?.nowPlaying]);
+
   useEffect(() => {
     const fetchRoom = async () => {
       try {
@@ -40,10 +48,6 @@ const RoomClient = ({ code }: IRoomClientProps) => {
 
     fetchRoom();
   }, [code]);
-
-  const sortedTracks = useMemo(() => {
-    return [...(room?.queue ?? [])].sort((a, b) => b.votes - a.votes);
-  }, [room?.queue]);
 
   const handleCopyLink = async () => {
     const url = `${window.location.origin}${pathname}`;
@@ -108,17 +112,32 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     }
   };
 
+  const handleSetPlaying = async (queueId: string) => {
+    try {
+      const room = await fetcher<IRoom>({
+        url: `/room/${code}/tracks/${queueId}/set-playing`,
+        method: "PATCH",
+      });
+
+      setRoom(room);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Room
         code={code}
         tracks={sortedTracks}
+        nowPlaying={nowPlaying}
         users={room?.users ?? []}
         isCopied={isCopied}
         handleOpen={handleModal}
         handleCopyLink={handleCopyLink}
         handleDeleteTrack={handleDeleteTrack}
         handleLikeTrack={handleLikeTrack}
+        handleSetPlaying={handleSetPlaying}
       />
       <SearchModal
         isOpen={isOpen}

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ITrack } from "@vibe-queue/shared";
-import { Heart, Trash } from "lucide-react";
+import { Heart, Play, Trash } from "lucide-react";
 import { LayoutGroup, motion } from "motion/react";
 import Image from "next/image";
 import { Button } from "./button";
@@ -11,12 +11,14 @@ interface IQueueListProps {
   tracks: ITrack[];
   handleDeleteTrack: (queueId: string) => void;
   handleLikeTrack: (queueId: string) => void;
+  handleSetPlaying: (queueId: string) => void;
 }
 
 const QueueList = ({
   tracks,
   handleDeleteTrack,
   handleLikeTrack,
+  handleSetPlaying,
 }: IQueueListProps) => {
   return (
     <ScrollArea className="w-full mt-4">
@@ -69,6 +71,13 @@ const QueueList = ({
                     onClick={() => handleDeleteTrack(item.queueId)}
                   >
                     <Trash /> Delete
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="rounded-full"
+                    onClick={() => handleSetPlaying(item.queueId)}
+                  >
+                    <Play /> Set Playing
                   </Button>
                 </div>
               </div>
