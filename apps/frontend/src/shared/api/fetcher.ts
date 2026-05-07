@@ -1,4 +1,4 @@
-import { ApiError } from "next/dist/server/api-utils";
+import { ApiError } from "@/lib/ApiError";
 import { API_URL } from "./config";
 
 type TFetcherActions = "GET" | "POST" | "PATCH" | "DELETE";
@@ -9,7 +9,17 @@ interface IFetcherParams {
   body?: unknown;
 }
 
-export const fetcher = async <T>({ url, method, body = null }: IFetcherParams): Promise<T> => {
+interface NestErrorResponse {
+  message: string;
+  error?: string;
+  statusCode: number;
+}
+
+export const fetcher = async <T>({
+  url,
+  method,
+  body = null,
+}: IFetcherParams): Promise<T> => {
   try {
     const response = await fetch(`${API_URL}${url}`, {
       method,
@@ -19,9 +29,17 @@ export const fetcher = async <T>({ url, method, body = null }: IFetcherParams): 
       },
     });
 
-    if (!response.ok) throw new ApiError(400, "BAD_REQUEST");
-
     const data = await response.json();
+
+    if (!response.ok) {
+      const errorData = data as NestErrorResponse;
+
+      throw new ApiError(
+        errorData.message,
+        errorData.statusCode,
+        errorData.error,
+      );
+    }
 
     return data;
   } catch (error) {
