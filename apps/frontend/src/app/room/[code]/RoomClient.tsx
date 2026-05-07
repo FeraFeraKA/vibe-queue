@@ -2,11 +2,11 @@
 
 import Room from "@/components/layout/Room";
 import SearchModal from "@/components/layout/SearchModal";
-import { mockQueueTracks, mockSearchTracks, mockUsers } from "@/mock";
+import { mockSearchTracks } from "@/mock";
 import { fetcher } from "@/shared/api/fetcher";
 import type { IRoom, ISearchTrack, ITrack, IUser } from "@vibe-queue/shared";
 import { usePathname } from "next/navigation";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 interface IRoomClientProps {
   code: string;
@@ -17,9 +17,28 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   const pathname = usePathname();
   const [isCopied, setIsCopied] = useState(false);
   const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [tracks, setTracks] = useState<ITrack[]>(mockQueueTracks);
-  const [searchTracks] = useState<ISearchTrack[]>(mockSearchTracks);
-  const [users] = useState<IUser[]>(mockUsers);
+  const [tracks, setTracks] = useState<ITrack[]>([]);
+  const [searchTracks, setSearchTracks] =
+    useState<ISearchTrack[]>(mockSearchTracks);
+  const [users, setUsers] = useState<IUser[]>([]);
+
+  useEffect(() => {
+    const fetchRoom = async () => {
+      try {
+        const room = await fetcher<IRoom>({
+          url: `/room/${code}`,
+          method: "GET",
+        });
+
+        setTracks(room.queue);
+        setUsers(room.users);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchRoom();
+  }, [code]);
 
   const sortedTracks = useMemo(() => {
     return [...tracks].sort((a, b) => b.votes - a.votes);

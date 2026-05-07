@@ -18,7 +18,7 @@ interface NestErrorResponse {
 export const fetcher = async <T>({
   url,
   method,
-  body = null,
+  body = undefined,
 }: IFetcherParams): Promise<T> => {
   try {
     const response = await fetch(`${API_URL}${url}`, {
