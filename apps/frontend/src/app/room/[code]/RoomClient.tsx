@@ -95,6 +95,19 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     }
   };
 
+  const handleDeleteTrack = async (queueId: string) => {
+    try {
+      const room = await fetcher<IRoom>({
+        url: `/room/${code}/tracks/${queueId}/delete`,
+        method: "DELETE",
+      });
+
+      setRoom(room);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Room
@@ -104,6 +117,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
         isCopied={isCopied}
         handleOpen={handleModal}
         handleCopyLink={handleCopyLink}
+        handleDeleteTrack={handleDeleteTrack}
         handleLikeTrack={handleLikeTrack}
       />
       <SearchModal

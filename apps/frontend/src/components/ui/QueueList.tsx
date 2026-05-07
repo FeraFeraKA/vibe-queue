@@ -1,7 +1,7 @@
 "use client";
 
 import type { ITrack } from "@vibe-queue/shared";
-import { Heart } from "lucide-react";
+import { Heart, Trash } from "lucide-react";
 import { LayoutGroup, motion } from "motion/react";
 import Image from "next/image";
 import { Button } from "./button";
@@ -9,10 +9,15 @@ import { ScrollArea } from "./scroll-area";
 
 interface IQueueListProps {
   tracks: ITrack[];
+  handleDeleteTrack: (queueId: string) => void;
   handleLikeTrack: (queueId: string) => void;
 }
 
-const QueueList = ({ tracks, handleLikeTrack }: IQueueListProps) => {
+const QueueList = ({
+  tracks,
+  handleDeleteTrack,
+  handleLikeTrack,
+}: IQueueListProps) => {
   return (
     <ScrollArea className="w-full mt-4">
       <LayoutGroup>
@@ -43,20 +48,29 @@ const QueueList = ({ tracks, handleLikeTrack }: IQueueListProps) => {
                   </p>
                   <p className="text-muted-foreground">Added by Fera</p>
                 </div>
-                <Button
-                  variant="outline"
-                  className="rounded-full"
-                  onClick={() => handleLikeTrack(item.queueId)}
-                >
-                  <Heart
-                    className={
-                      item.likedBy.length > 0
-                        ? "fill-red-500 text-red-500"
-                        : ""
-                    }
-                  />
-                  {item.votes}
-                </Button>
+                <div className="flex items-center gap-4">
+                  <Button
+                    variant="outline"
+                    className="rounded-full"
+                    onClick={() => handleLikeTrack(item.queueId)}
+                  >
+                    <Heart
+                      className={
+                        item.likedBy.length > 0
+                          ? "fill-red-500 text-red-500"
+                          : ""
+                      }
+                    />
+                    {item.votes}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="rounded-full"
+                    onClick={() => handleDeleteTrack(item.queueId)}
+                  >
+                    <Trash /> Delete
+                  </Button>
+                </div>
               </div>
             </motion.div>
           ))}

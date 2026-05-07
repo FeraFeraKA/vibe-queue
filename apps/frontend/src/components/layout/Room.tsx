@@ -1,11 +1,11 @@
 "use client";
 
+import type { ITrack, IUser } from "@vibe-queue/shared";
 import { Check, Copy, Search } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import QueueList from "../ui/QueueList";
 import Users from "../ui/Users";
-import type { ITrack, IUser } from "@vibe-queue/shared";
 
 interface IRoomProps {
   code: string;
@@ -14,6 +14,7 @@ interface IRoomProps {
   isCopied: boolean;
   handleOpen: (flag: boolean) => void;
   handleCopyLink: () => Promise<void>;
+  handleDeleteTrack: (queueId: string) => void;
   handleLikeTrack: (queueId: string) => void;
 }
 
@@ -24,6 +25,7 @@ const Room = ({
   isCopied,
   handleOpen,
   handleCopyLink,
+  handleDeleteTrack,
   handleLikeTrack,
 }: IRoomProps) => {
   return (
@@ -87,7 +89,11 @@ const Room = ({
                 </div>
               </div>
               <p className="text-muted-foreground mt-6">Queue</p>
-              <QueueList tracks={tracks} handleLikeTrack={handleLikeTrack} />
+              <QueueList
+                tracks={tracks}
+                handleDeleteTrack={handleDeleteTrack}
+                handleLikeTrack={handleLikeTrack}
+              />
             </div>
             <div className="min-h-80 lg:col-span-3 lg:h-full border rounded-3xl bg-[#d5d5d5] dark:bg-[#171717] p-6 shadow-xl">
               <p className="text-muted-foreground">Online Users</p>
