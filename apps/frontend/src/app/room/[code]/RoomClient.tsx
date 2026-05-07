@@ -4,6 +4,7 @@ import Room from "@/components/layout/Room";
 import SearchModal from "@/components/layout/SearchModal";
 import { mockSearchTracks } from "@/mock";
 import { fetcher } from "@/shared/api/fetcher";
+import { getCurrentRoomUser } from "@/shared/helpers/saveSession";
 import type { IRoom, ISearchTrack, ITrack, IUser } from "@vibe-queue/shared";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -21,6 +22,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   const [searchTracks, setSearchTracks] =
     useState<ISearchTrack[]>(mockSearchTracks);
   const [users, setUsers] = useState<IUser[]>([]);
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
   useEffect(() => {
     const fetchRoom = async () => {
@@ -32,6 +34,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
 
         setTracks(room.queue);
         setUsers(room.users);
+        setCurrentUser(getCurrentRoomUser(room.code));
       } catch (error) {
         console.error(error);
       }

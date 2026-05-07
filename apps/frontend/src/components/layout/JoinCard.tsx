@@ -1,7 +1,8 @@
 "use client";
 
 import { fetcher } from "@/shared/api/fetcher";
-import { IRoom } from "@vibe-queue/shared";
+import { saveCurrentRoomUser } from "@/shared/helpers/saveSession";
+import { IRoom, IUser } from "@vibe-queue/shared";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
@@ -25,7 +26,7 @@ const JoinCard = () => {
     e.preventDefault();
 
     try {
-      const room = await fetcher<IRoom>({
+      const { room, user } = await fetcher<{ room: IRoom; user: IUser }>({
         url: `/room/${code}/join`,
         method: "PATCH",
         body: {
@@ -33,6 +34,8 @@ const JoinCard = () => {
           nickname,
         },
       });
+
+      saveCurrentRoomUser(room.code, user);
 
       router.push(`/room/${room.code}`);
     } catch (error) {
