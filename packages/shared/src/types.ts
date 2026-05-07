@@ -26,6 +26,11 @@ export interface IAddTrackPayload {
   track: ISearchTrack;
 }
 
+export interface IDeleteTrackPayload {
+  code: TCode;
+  queueId: TId;
+}
+
 export interface IVoteTrackPayload {
   code: TCode;
   queueId: TId;
@@ -37,7 +42,7 @@ export interface ISetPlayingPayload {
   queueId: TId;
 }
 
-export type TProvider = 'spotify' | 'mock';
+export type TProvider = "spotify" | "mock";
 
 export interface ISearchTrack {
   provider: TProvider;
