@@ -1,6 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { fetcher } from "@/shared/api/fetcher";
+import { IRoom } from "@vibe-queue/shared";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import {
@@ -17,13 +19,25 @@ import { Label } from "../ui/label";
 const JoinCard = () => {
   const [code, setCode] = useState("");
   const [nickname, setNickname] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    // Handle form submission
 
-    setCode("");
-    setNickname("");
+    try {
+      const room = await fetcher<IRoom>({
+        url: `/room/${code}/join`,
+        method: "PATCH",
+        body: {
+          code,
+          nickname,
+        },
+      });
+
+      router.push(`/room/${room.code}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -67,7 +81,7 @@ const JoinCard = () => {
             form="join-room-form"
             className="w-full text-white dark:bg-blue-700"
           >
-            <Link href="/room/DEMO">Join Room</Link>
+            Join Room
           </Button>
         </CardFooter>
       </Card>
