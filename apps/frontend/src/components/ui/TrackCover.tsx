@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Skeleton } from "./skeleton";
 
-interface TrackCoverProps {
+interface ITrackCoverProps {
   src: string;
   alt: string;
   size?: number;
@@ -16,16 +16,16 @@ const TrackCover = ({
   alt,
   size = 200,
   className = "",
-}: TrackCoverProps) => {
+}: ITrackCoverProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
     <div
-      className={`relative overflow-hidden ${className}`}
+      className={`relative overflow-hidden shrink-0 ${className}`}
       style={{ width: size, height: size }}
     >
       {isLoading && (
-        <Skeleton className="absolute inset-0 h-full w-full rounded-3xl" />
+        <Skeleton className={`absolute inset-0 h-full w-full ${className}`} />
       )}
 
       <Image
