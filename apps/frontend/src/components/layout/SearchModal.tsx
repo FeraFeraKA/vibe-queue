@@ -2,7 +2,6 @@
 
 import type { ISearchTrack } from "@vibe-queue/shared";
 import { Plus } from "lucide-react";
-import Image from "next/image";
 import { Button } from "../ui/button";
 import {
   Command,
@@ -14,6 +13,7 @@ import {
   CommandList,
 } from "../ui/command";
 import { Skeleton } from "../ui/skeleton";
+import TrackCover from "../ui/TrackCover";
 
 interface ISearchModalProps {
   isOpen: boolean;
@@ -64,11 +64,12 @@ const SearchModal = ({
                 <CommandGroup key={track.providerTrackId} heading={track.title}>
                   <CommandItem className="flex justify-between">
                     <div className="flex items-center gap-4">
-                      <Image
+                      <TrackCover
+                        key={track.coverUrl}
                         src={track.coverUrl}
                         alt={track.title}
-                        width={40}
-                        height={40}
+                        size={40}
+                        className="rounded-xl"
                       />
                       {track.title + " - " + track.artistText}
                     </div>

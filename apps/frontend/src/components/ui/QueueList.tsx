@@ -3,9 +3,9 @@
 import type { ITrack } from "@vibe-queue/shared";
 import { Heart, Play, Trash } from "lucide-react";
 import { LayoutGroup, motion } from "motion/react";
-import Image from "next/image";
 import { Button } from "./button";
 import { ScrollArea } from "./scroll-area";
+import TrackCover from "./TrackCover";
 
 interface IQueueListProps {
   tracks: ITrack[];
@@ -37,7 +37,12 @@ const QueueList = ({
               }}
               className="relative flex flex-col md:flex-row items-center p-3 rounded-xl bg-[#e2e2e2] dark:bg-[#111111] w-full gap-4"
             >
-              <Image src={item.coverUrl} alt="Cover" width={80} height={80} />
+              <TrackCover
+                src={item.coverUrl}
+                alt={item.title}
+                size={80}
+                className="rounded-xl"
+              />
               <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left w-full gap-4">
                 <div className="flex flex-col">
                   <p className="text-xl">{item.title}</p>

@@ -2,9 +2,9 @@
 
 import type { ITrack, IUser } from "@vibe-queue/shared";
 import { Check, Copy, Search } from "lucide-react";
-import Image from "next/image";
 import { Button } from "../ui/button";
 import QueueList from "../ui/QueueList";
+import TrackCover from "../ui/TrackCover";
 import Users from "../ui/Users";
 
 interface IRoomProps {
@@ -78,11 +78,11 @@ const Room = ({
               <div className="flex flex-col md:flex-row items-center justify-center mt-4 p-4 border min-h-60 rounded-3xl border-dashed">
                 {nowPlaying ? (
                   <>
-                    <Image
+                    <TrackCover
+                      key={nowPlaying.coverUrl}
                       src={nowPlaying.coverUrl}
-                      alt="Now Playing"
-                      width={200}
-                      height={200}
+                      alt={nowPlaying.title}
+                      size={200}
                       className="rounded-3xl"
                     />
                     <div className="mx-auto text-center max-w-75 ">
