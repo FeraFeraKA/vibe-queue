@@ -70,13 +70,12 @@ const RoomClient = ({ code }: IRoomClientProps) => {
         });
 
         setSearchTracks(tracks);
+        setIsSearching(false);
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") {
           return;
         }
         console.error(error);
-      } finally {
-        setIsSearching(false);
       }
     }, 200);
 
@@ -187,6 +186,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
         handleOpen={handleModal}
         tracks={searchTracks}
         handleAddTrack={handleAddTrack}
+        isSearching={isSearching}
         handleSearchTracks={handleSearchTracks}
       />
     </>
