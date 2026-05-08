@@ -7,6 +7,7 @@ interface IFetcherParams {
   url: string;
   method: TFetcherActions;
   body?: unknown;
+  signal?: AbortSignal;
 }
 
 interface NestErrorResponse {
@@ -19,6 +20,7 @@ export const fetcher = async <T>({
   url,
   method,
   body = undefined,
+  signal,
 }: IFetcherParams): Promise<T> => {
   try {
     const response = await fetch(`${API_URL}${url}`, {
@@ -27,6 +29,7 @@ export const fetcher = async <T>({
       headers: {
         "Content-Type": "application/json",
       },
+      signal,
     });
 
     const data = await response.json();
