@@ -12,14 +12,15 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
 } from "../ui/command";
+import { Skeleton } from "../ui/skeleton";
 
 interface ISearchModalProps {
   isOpen: boolean;
   tracks: ISearchTrack[] | null;
   handleOpen: (flag: boolean) => void;
   handleAddTrack: (track: ISearchTrack) => void;
+  isSearching: boolean;
   handleSearchTracks: (query: string) => Promise<void>;
 }
 
@@ -28,6 +29,7 @@ const SearchModal = ({
   handleOpen,
   tracks,
   handleAddTrack,
+  isSearching,
   handleSearchTracks,
 }: ISearchModalProps) => {
   return (
@@ -44,33 +46,42 @@ const SearchModal = ({
           />
           <CommandList className="max-h-[calc(100vh-320px)]">
             <CommandEmpty>No results found.</CommandEmpty>
-            {tracks
-              ? tracks.map((track) => (
-                  <CommandGroup
-                    key={track.providerTrackId}
-                    heading={track.title}
-                  >
-                    <CommandItem className="flex justify-between">
-                      <div className="flex items-center gap-4">
-                        <Image
-                          src={track.coverUrl}
-                          alt={track.title}
-                          width={40}
-                          height={40}
-                        />
-                        {track.title + " - " + track.artistText}
-                      </div>
-                      <Button
-                        variant="outline"
-                        onClick={() => handleAddTrack(track)}
-                      >
-                        <Plus /> Add
-                      </Button>
-                    </CommandItem>
-                    <CommandSeparator />
-                  </CommandGroup>
-                ))
-              : null}
+            {isSearching ? (
+              <>
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <div key={index} className="flex flex-col gap-2">
+                    <CommandGroup className="">
+                      <Skeleton className="w-30 h-4 my-2 mx-3" />
+                      <CommandItem className="p-0 m-0">
+                        <Skeleton className="w-full h-14 rounded-3xl" />
+                      </CommandItem>
+                    </CommandGroup>
+                  </div>
+                ))}
+              </>
+            ) : tracks ? (
+              tracks.map((track) => (
+                <CommandGroup key={track.providerTrackId} heading={track.title}>
+                  <CommandItem className="flex justify-between">
+                    <div className="flex items-center gap-4">
+                      <Image
+                        src={track.coverUrl}
+                        alt={track.title}
+                        width={40}
+                        height={40}
+                      />
+                      {track.title + " - " + track.artistText}
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={() => handleAddTrack(track)}
+                    >
+                      <Plus /> Add
+                    </Button>
+                  </CommandItem>
+                </CommandGroup>
+              ))
+            ) : null}
           </CommandList>
         </Command>
       </CommandDialog>
