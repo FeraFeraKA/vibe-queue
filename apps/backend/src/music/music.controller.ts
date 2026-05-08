@@ -6,7 +6,7 @@ import { MusicService } from './music.service';
 export class MusicController {
   constructor(private readonly musicService: MusicService) {}
 
-  @Get('search/:query')
+  @Get('/:provider/search/:query')
   searchTracks(
     @Param('query') query: string,
     @Param('provider') provider: TProvider,
