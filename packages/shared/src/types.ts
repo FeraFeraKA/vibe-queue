@@ -66,3 +66,8 @@ export interface IUser {
   id: TId;
   nickname: TNickname;
 }
+
+export interface ISearchTracksPayload {
+  query: string;
+  provider: TProvider;
+}

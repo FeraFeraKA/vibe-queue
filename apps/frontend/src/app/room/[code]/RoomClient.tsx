@@ -2,7 +2,6 @@
 
 import Room from "@/components/layout/Room";
 import SearchModal from "@/components/layout/SearchModal";
-import { mockSearchTracks } from "@/mock";
 import { fetcher } from "@/shared/api/fetcher";
 import { getCurrentRoomUser } from "@/shared/helpers/saveSession";
 import type { IRoom, ISearchTrack, IUser } from "@vibe-queue/shared";
@@ -19,8 +18,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   const pathname = usePathname();
   const [isCopied, setIsCopied] = useState(false);
   const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [searchTracks, setSearchTracks] =
-    useState<ISearchTrack[]>(mockSearchTracks);
+  const [searchTracks, setSearchTracks] = useState<ISearchTrack[] | null>(null);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
   const sortedTracks = useMemo(() => {
@@ -125,6 +123,24 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     }
   };
 
+  const handleSearchTracks = async (query: string) => {
+    if (query.trim() === "") {
+      setSearchTracks(null);
+      return;
+    }
+
+    try {
+      const tracks = await fetcher<ISearchTrack[]>({
+        url: `/music/search/${query}`,
+        method: "GET",
+      });
+
+      setSearchTracks(tracks);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Room
@@ -144,6 +160,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
         handleOpen={handleModal}
         tracks={searchTracks}
         handleAddTrack={handleAddTrack}
+        handleSearchTracks={handleSearchTracks}
       />
     </>
   );
