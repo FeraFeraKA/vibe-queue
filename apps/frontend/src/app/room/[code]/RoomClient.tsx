@@ -22,6 +22,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+  const [isRoomLoading, setIsRoomLoading] = useState(true);
 
   const sortedTracks = useMemo(() => {
     return [...(room?.queue ?? [])].sort((a, b) => b.votes - a.votes);
@@ -41,6 +42,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
 
         setRoom(room);
         setCurrentUser(getCurrentRoomUser(room.code));
+        setIsRoomLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -175,6 +177,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
         nowPlaying={nowPlaying}
         users={room?.users ?? []}
         isCopied={isCopied}
+        isRoomLoading={isRoomLoading}
         handleOpen={handleModal}
         handleCopyLink={handleCopyLink}
         handleDeleteTrack={handleDeleteTrack}

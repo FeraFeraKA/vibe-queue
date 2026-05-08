@@ -4,6 +4,7 @@ import type { ITrack, IUser } from "@vibe-queue/shared";
 import { Check, Copy, Search } from "lucide-react";
 import { Button } from "../ui/button";
 import QueueList from "../ui/QueueList";
+import { Skeleton } from "../ui/skeleton";
 import TrackCover from "../ui/TrackCover";
 import Users from "../ui/Users";
 
@@ -13,6 +14,7 @@ interface IRoomProps {
   nowPlaying?: ITrack | null;
   users: IUser[];
   isCopied: boolean;
+  isRoomLoading: boolean;
   handleOpen: (flag: boolean) => void;
   handleCopyLink: () => Promise<void>;
   handleDeleteTrack: (queueId: string) => void;
@@ -26,6 +28,7 @@ const Room = ({
   nowPlaying,
   users,
   isCopied,
+  isRoomLoading,
   handleOpen,
   handleCopyLink,
   handleDeleteTrack,
@@ -76,7 +79,15 @@ const Room = ({
             <div className="min-h-80 lg:col-span-7 lg:h-full border rounded-3xl bg-[#d5d5d5] dark:bg-[#171717] p-6 shadow-xl">
               <p className="text-muted-foreground">Now Playing</p>
               <div className="flex flex-col md:flex-row items-center justify-center mt-4 p-4 border min-h-60 rounded-3xl border-dashed">
-                {nowPlaying ? (
+                {isRoomLoading ? (
+                  <>
+                    <Skeleton className="h-50 w-50 rounded-3xl" />
+                    <div className="flex flex-col items-center mx-auto w-full max-w-75">
+                      <Skeleton className="h-6 rounded-lg mt-4 md:mt-0 w-full max-w-50" />
+                      <Skeleton className="h-4 rounded-lg mt-4 w-full" />
+                    </div>
+                  </>
+                ) : nowPlaying ? (
                   <>
                     <TrackCover
                       key={nowPlaying.coverUrl}
@@ -103,6 +114,7 @@ const Room = ({
               <p className="text-muted-foreground mt-6">Queue</p>
               <QueueList
                 tracks={tracks}
+                isRoomLoading={isRoomLoading}
                 handleDeleteTrack={handleDeleteTrack}
                 handleLikeTrack={handleLikeTrack}
                 handleSetPlaying={handleSetPlaying}
@@ -110,7 +122,7 @@ const Room = ({
             </div>
             <div className="min-h-80 lg:col-span-3 lg:h-full border rounded-3xl bg-[#d5d5d5] dark:bg-[#171717] p-6 shadow-xl">
               <p className="text-muted-foreground">Online Users</p>
-              <Users users={users} />
+              <Users users={users} isRoomLoading={isRoomLoading} />
             </div>
           </section>
         </main>
