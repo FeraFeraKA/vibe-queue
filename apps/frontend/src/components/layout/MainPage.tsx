@@ -7,7 +7,7 @@ const MainPage = () => {
   return (
     <main
       id="main"
-      className="max-w-4xl 2xl:max-w-6xl mx-auto py-24 px-4 text-center z-10"
+      className="max-w-4xl 3xl:max-w-6xl mx-auto py-24 px-4 text-center z-10"
     >
       <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
         Main Page

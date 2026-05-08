@@ -50,7 +50,7 @@ const QueueList = ({
                   </p>
                   <p className="text-muted-foreground">Added by Fera</p>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col min-[400px]:flex-row items-center gap-4">
                   <Button
                     variant="outline"
                     className="rounded-full"

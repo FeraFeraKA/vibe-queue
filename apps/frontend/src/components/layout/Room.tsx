@@ -34,7 +34,7 @@ const Room = ({
 }: IRoomProps) => {
   return (
     <>
-      <div className="flex flex-col w-full max-w-5xl 2xl:max-w-7xl min-h-[calc(100vh-80px)] mx-auto z-10 relative px-4">
+      <div className="flex flex-col w-full max-w-5xl 3xl:max-w-7xl min-h-[calc(100vh-80px)] mx-auto z-10 relative px-4">
         <main className="mt-4 flex flex-1 flex-col">
           <section className="flex justify-between items-center">
             <div className="flex flex-col gap-4">
@@ -75,30 +75,30 @@ const Room = ({
           <section className="grid grid-cols-1 gap-6 lg:flex-1 lg:grid-cols-10 my-4">
             <div className="min-h-80 lg:col-span-7 lg:h-full border rounded-3xl bg-[#d5d5d5] dark:bg-[#171717] p-6 shadow-xl">
               <p className="text-muted-foreground">Now Playing</p>
-              <div className="flex flex-col md:flex-row items-center mt-4 p-4 border min-h-60 rounded-3xl border-dashed">
-                <Image
-                  src="https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228"
-                  alt="Now Playing"
-                  width={200}
-                  height={200}
-                  className="rounded-3xl"
-                />
-                <div className="mx-auto text-center max-w-75">
-                  {nowPlaying ? (
-                    <>
+              <div className="flex flex-col md:flex-row items-center justify-center mt-4 p-4 border min-h-60 rounded-3xl border-dashed">
+                {nowPlaying ? (
+                  <>
+                    <Image
+                      src={nowPlaying.coverUrl}
+                      alt="Now Playing"
+                      width={200}
+                      height={200}
+                      className="rounded-3xl"
+                    />
+                    <div className="mx-auto text-center max-w-75 ">
                       <p className="text-3xl font-bold mt-4 md:mt-0">
                         {nowPlaying.title}
                       </p>
                       <p className="text-lg text-muted-foreground mt-1">
                         {nowPlaying.artistText}
                       </p>
-                    </>
-                  ) : (
-                    <p className="text-3xl font-bold mt-4 md:mt-0">
-                      No track is playing
-                    </p>
-                  )}
-                </div>
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-3xl font-bold text-center mt-4 md:mt-0">
+                    No track is playing
+                  </p>
+                )}
               </div>
               <p className="text-muted-foreground mt-6">Queue</p>
               <QueueList

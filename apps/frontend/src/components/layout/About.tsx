@@ -2,7 +2,7 @@ const About = () => {
   return (
     <section
       id="about"
-      className="mx-auto max-w-4xl px-4 py-24 text-center relative z-10"
+      className="mx-auto max-w-4xl 3xl:max-w-6xl px-4 py-24 text-center relative z-10"
     >
       <p className="text-sm font-medium uppercase tracking-[0.3em] text-muted-foreground">
         About
