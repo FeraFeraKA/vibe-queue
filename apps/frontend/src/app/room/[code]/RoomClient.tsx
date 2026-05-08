@@ -18,7 +18,9 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   const pathname = usePathname();
   const [isCopied, setIsCopied] = useState(false);
   const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [searchTracks, setSearchTracks] = useState<ISearchTrack[] | null>(null);
+  const [searchTracks, setSearchTracks] = useState<ISearchTrack[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
   const sortedTracks = useMemo(() => {
@@ -47,6 +49,43 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     fetchRoom();
   }, [code]);
 
+  useEffect(() => {
+    const query = searchQuery.trim();
+
+    if (query === "") {
+      //eslint-disable-next-line react-hooks/set-state-in-effect
+      setSearchTracks([]);
+      setIsSearching(false);
+      return;
+    }
+
+    const abortController = new AbortController();
+
+    const timeoutId = setTimeout(async () => {
+      try {
+        const tracks = await fetcher<ISearchTrack[]>({
+          url: `/music/spotify/search/${query}`,
+          method: "GET",
+          signal: abortController.signal,
+        });
+
+        setSearchTracks(tracks);
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+        console.error(error);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(timeoutId);
+      abortController.abort();
+    };
+  }, [searchQuery]);
+
   const handleCopyLink = async () => {
     const url = `${window.location.origin}${pathname}`;
 
@@ -65,6 +104,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
 
   const handleModal = (flag: boolean) => {
     setIsOpen(flag);
+    setSearchQuery("");
   };
 
   const handleLikeTrack = async (queueId: string) => {
@@ -124,21 +164,8 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   };
 
   const handleSearchTracks = async (query: string) => {
-    if (query.trim() === "") {
-      setSearchTracks(null);
-      return;
-    }
-
-    try {
-      const tracks = await fetcher<ISearchTrack[]>({
-        url: `/music/search/${query}`,
-        method: "GET",
-      });
-
-      setSearchTracks(tracks);
-    } catch (error) {
-      console.error(error);
-    }
+    setIsSearching(true);
+    setSearchQuery(query);
   };
 
   return (
