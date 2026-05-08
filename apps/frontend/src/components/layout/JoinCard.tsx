@@ -16,14 +16,17 @@ import {
 } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { Spinner } from "../ui/spinner";
 
 const JoinCard = () => {
   const [code, setCode] = useState("");
   const [nickname, setNickname] = useState("");
+  const [isJoining, setIsJoining] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    setIsJoining(true);
 
     try {
       const { room, user } = await fetcher<{ room: IRoom; user: IUser }>({
@@ -83,8 +86,15 @@ const JoinCard = () => {
             type="submit"
             form="join-room-form"
             className="w-full text-white dark:bg-blue-700"
+            disabled={isJoining || !code || !nickname}
           >
-            Join Room
+            {isJoining ? (
+              <>
+                <Spinner /> Joining...
+              </>
+            ) : (
+              "Join Room"
+            )}
           </Button>
         </CardFooter>
       </Card>

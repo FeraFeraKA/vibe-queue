@@ -16,14 +16,17 @@ import {
 } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { Spinner } from "../ui/spinner";
 
 const CreateCard = () => {
   const [code, setCode] = useState("");
   const [nickname, setNickname] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    setIsCreating(true);
 
     try {
       const { room, user } = await fetcher<{ room: IRoom; user: IUser }>({
@@ -85,8 +88,15 @@ const CreateCard = () => {
             type="submit"
             form="create-room-form"
             className="w-full text-white dark:bg-blue-700"
+            disabled={isCreating || !code || !nickname}
           >
-            Create Room
+            {isCreating ? (
+              <>
+                <Spinner /> Creating...
+              </>
+            ) : (
+              "Create Room"
+            )}
           </Button>
         </CardFooter>
       </Card>
