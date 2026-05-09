@@ -4,6 +4,7 @@ import Room from "@/components/layout/Room";
 import SearchModal from "@/components/layout/SearchModal";
 import { fetcher } from "@/shared/api/fetcher";
 import { getCurrentRoomUser } from "@/shared/helpers/saveSession";
+import { socket } from "@/shared/socket/socket";
 import type { IRoom, ISearchTrack, IUser } from "@vibe-queue/shared";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -31,6 +32,21 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   const nowPlaying = useMemo(() => {
     return room?.nowPlaying;
   }, [room?.nowPlaying]);
+
+  useEffect(() => {
+    socket.connect();
+
+    socket.emit("room:join", { code });
+
+    socket.on("room:updated", (updatedRoom) => {
+      setRoom(updatedRoom);
+    });
+
+    return () => {
+      socket.off("room:updated");
+      socket.disconnect();
+    };
+  }, [code]);
 
   useEffect(() => {
     const fetchRoom = async () => {
