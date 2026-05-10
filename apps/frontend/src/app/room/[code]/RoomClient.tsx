@@ -34,37 +34,30 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   }, [room?.nowPlaying]);
 
   useEffect(() => {
-    socket.connect();
+    const currentUser = getCurrentRoomUser(code);
 
-    socket.emit("room:join", { code });
+    if (!currentUser) {
+      //eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsRoomLoading(false);
+      return;
+    }
+
+    setCurrentUser(currentUser);
+
+    socket.connect();
 
     socket.on("room:updated", (updatedRoom) => {
       setRoom(updatedRoom);
+      setIsRoomLoading(false);
     });
+
+    socket.emit("room:watch", { code, userId: currentUser.id });
 
     return () => {
       socket.off("room:updated");
+      socket.off("room:join");
       socket.disconnect();
     };
-  }, [code]);
-
-  useEffect(() => {
-    const fetchRoom = async () => {
-      try {
-        const room = await fetcher<IRoom>({
-          url: `/room/${code}`,
-          method: "GET",
-        });
-
-        setRoom(room);
-        setCurrentUser(getCurrentRoomUser(room.code));
-        setIsRoomLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchRoom();
   }, [code]);
 
   useEffect(() => {

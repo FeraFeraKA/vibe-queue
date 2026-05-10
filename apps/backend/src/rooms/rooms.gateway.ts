@@ -5,9 +5,45 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import type { IVoteTrackPayload, TCode } from '@vibe-queue/shared';
+import type {
+  IRoom,
+  IVoteTrackPayload,
+  IWatchRoomPayload,
+  TCode,
+  TId,
+} from '@vibe-queue/shared';
 import { Server, Socket } from 'socket.io';
 import { RoomsService } from './rooms.service';
+
+interface IClientToServerEvents {
+  'room:watch': (data: IWatchRoomPayload) => void;
+  'track:vote': (data: IVoteTrackPayload) => void;
+}
+
+interface IServerToClientEvents {
+  'room:updated': (room: IRoom) => void;
+}
+
+type TInterServerEvents = Record<never, never>;
+
+interface IRoomSocketData {
+  roomCode?: TCode;
+  userId?: TId;
+}
+
+type RoomServer = Server<
+  IClientToServerEvents,
+  IServerToClientEvents,
+  TInterServerEvents,
+  IRoomSocketData
+>;
+
+type RoomSocket = Socket<
+  IClientToServerEvents,
+  IServerToClientEvents,
+  TInterServerEvents,
+  IRoomSocketData
+>;
 
 @WebSocketGateway({
   cors: {
@@ -16,22 +52,23 @@ import { RoomsService } from './rooms.service';
 })
 export class RoomsGateway {
   @WebSocketServer()
-  server!: Server;
+  server!: RoomServer;
   constructor(private readonly roomsService: RoomsService) {}
 
-  @SubscribeMessage('room:join')
-  handleJoinRoom(
-    @ConnectedSocket() client: Socket,
+  @SubscribeMessage('room:watch')
+  async handleWatchRoom(
+    @ConnectedSocket() client: RoomSocket,
     @MessageBody()
-    data: {
-      code: TCode;
-    },
+    data: IWatchRoomPayload,
   ) {
     const room = this.roomsService.findRoom(data.code);
 
-    client.join(room.code);
+    await client.join(room.code);
 
-    client.emit('room:updated', room);
+    client.data.roomCode = room.code;
+    client.data.userId = data.userId;
+
+    this.server.to(room.code).emit('room:updated', room);
 
     return room;
   }

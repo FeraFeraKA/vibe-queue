@@ -11,6 +11,11 @@ export interface IRoom {
   queue: ITrack[];
 }
 
+export interface IWatchRoomPayload {
+  code: TCode;
+  userId: TId;
+}
+
 export interface ICreateRoomPayload {
   code: TCode;
   nickname: TNickname;
