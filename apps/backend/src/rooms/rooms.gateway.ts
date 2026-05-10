@@ -9,6 +9,7 @@ import type {
   IAddTrackPayload,
   IDeleteTrackPayload,
   IRoom,
+  ISetPlayingPayload,
   IVoteTrackPayload,
   IWatchRoomPayload,
   TCode,
@@ -101,6 +102,16 @@ export class RoomsGateway {
     data: IDeleteTrackPayload,
   ) {
     const room = this.roomsService.deleteTrack(data);
+
+    this.server.to(room.code).emit('room:updated', room);
+  }
+
+  @SubscribeMessage('track:set-playing')
+  handleSetPlaying(
+    @MessageBody()
+    data: ISetPlayingPayload,
+  ) {
+    const room = this.roomsService.setPlaying(data);
 
     this.server.to(room.code).emit('room:updated', room);
   }

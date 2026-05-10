@@ -117,16 +117,6 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     setSearchQuery("");
   };
 
-  const handleLikeTrack = async (queueId: string) => {
-    if (!currentUser) return;
-
-    socket.emit("track:vote", {
-      code,
-      queueId,
-      nickname: currentUser.nickname,
-    });
-  };
-
   const handleAddTrack = async (track: ISearchTrack) => {
     socket.emit("track:add", {
       code,
@@ -141,17 +131,21 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     });
   };
 
-  const handleSetPlaying = async (queueId: string) => {
-    try {
-      const room = await fetcher<IRoom>({
-        url: `/room/${code}/tracks/${queueId}/set-playing`,
-        method: "PATCH",
-      });
+  const handleLikeTrack = async (queueId: string) => {
+    if (!currentUser) return;
 
-      setRoom(room);
-    } catch (error) {
-      console.error(error);
-    }
+    socket.emit("track:vote", {
+      code,
+      queueId,
+      nickname: currentUser.nickname,
+    });
+  };
+
+  const handleSetPlaying = async (queueId: string) => {
+    socket.emit("track:set-playing", {
+      code,
+      queueId,
+    });
   };
 
   const handleSearchTracks = async (query: string) => {
