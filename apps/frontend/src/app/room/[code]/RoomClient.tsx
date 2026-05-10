@@ -128,17 +128,10 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   };
 
   const handleAddTrack = async (track: ISearchTrack) => {
-    try {
-      const room = await fetcher<IRoom>({
-        url: `/room/${code}/tracks`,
-        method: "PATCH",
-        body: { track },
-      });
-
-      setRoom(room);
-    } catch (error) {
-      console.error(error);
-    }
+    socket.emit("track:add", {
+      code,
+      track,
+    });
   };
 
   const handleDeleteTrack = async (queueId: string) => {

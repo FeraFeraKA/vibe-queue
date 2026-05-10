@@ -6,6 +6,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import type {
+  IAddTrackPayload,
   IRoom,
   IVoteTrackPayload,
   IWatchRoomPayload,
@@ -79,6 +80,16 @@ export class RoomsGateway {
     data: IVoteTrackPayload,
   ) {
     const room = this.roomsService.voteTrack(data);
+
+    this.server.to(room.code).emit('room:updated', room);
+  }
+
+  @SubscribeMessage('track:add')
+  handleAddTrack(
+    @MessageBody()
+    data: IAddTrackPayload,
+  ) {
+    const room = this.roomsService.addTrack(data);
 
     this.server.to(room.code).emit('room:updated', room);
   }
