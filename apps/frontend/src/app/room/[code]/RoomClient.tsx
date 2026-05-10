@@ -135,16 +135,10 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   };
 
   const handleDeleteTrack = async (queueId: string) => {
-    try {
-      const room = await fetcher<IRoom>({
-        url: `/room/${code}/tracks/${queueId}/delete`,
-        method: "DELETE",
-      });
-
-      setRoom(room);
-    } catch (error) {
-      console.error(error);
-    }
+    socket.emit("track:delete", {
+      code,
+      queueId,
+    });
   };
 
   const handleSetPlaying = async (queueId: string) => {

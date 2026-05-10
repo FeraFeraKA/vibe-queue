@@ -7,6 +7,7 @@ import {
 } from '@nestjs/websockets';
 import type {
   IAddTrackPayload,
+  IDeleteTrackPayload,
   IRoom,
   IVoteTrackPayload,
   IWatchRoomPayload,
@@ -90,6 +91,16 @@ export class RoomsGateway {
     data: IAddTrackPayload,
   ) {
     const room = this.roomsService.addTrack(data);
+
+    this.server.to(room.code).emit('room:updated', room);
+  }
+
+  @SubscribeMessage('track:delete')
+  handleDeleteTrack(
+    @MessageBody()
+    data: IDeleteTrackPayload,
+  ) {
+    const room = this.roomsService.deleteTrack(data);
 
     this.server.to(room.code).emit('room:updated', room);
   }
