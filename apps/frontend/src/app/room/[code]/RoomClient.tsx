@@ -127,17 +127,11 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   const handleLikeTrack = async (queueId: string) => {
     if (!currentUser) return;
 
-    try {
-      const room = await fetcher<IRoom>({
-        url: `/room/${code}/tracks/${queueId}/vote`,
-        method: "PATCH",
-        body: { nickname: currentUser.nickname },
-      });
-
-      setRoom(room);
-    } catch (error) {
-      console.error(error);
-    }
+    socket.emit("track:vote", {
+      code,
+      queueId,
+      nickname: currentUser.nickname,
+    });
   };
 
   const handleAddTrack = async (track: ISearchTrack) => {

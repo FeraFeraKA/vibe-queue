@@ -3,9 +3,10 @@ import {
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
+  WebSocketServer,
 } from '@nestjs/websockets';
-import { TCode } from '@vibe-queue/shared';
-import { Socket } from 'socket.io';
+import type { IVoteTrackPayload, TCode } from '@vibe-queue/shared';
+import { Server, Socket } from 'socket.io';
 import { RoomsService } from './rooms.service';
 
 @WebSocketGateway({
@@ -14,6 +15,8 @@ import { RoomsService } from './rooms.service';
   },
 })
 export class RoomsGateway {
+  @WebSocketServer()
+  server!: Server;
   constructor(private readonly roomsService: RoomsService) {}
 
   @SubscribeMessage('room:join')
@@ -31,5 +34,15 @@ export class RoomsGateway {
     client.emit('room:updated', room);
 
     return room;
+  }
+
+  @SubscribeMessage('track:vote')
+  handleVoteTrack(
+    @MessageBody()
+    data: IVoteTrackPayload,
+  ) {
+    const room = this.roomsService.voteTrack(data);
+
+    this.server.to(room.code).emit('room:updated', room);
   }
 }
