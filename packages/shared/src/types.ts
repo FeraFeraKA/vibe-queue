@@ -26,6 +26,11 @@ export interface IJoinRoomPayload {
   nickname: TNickname;
 }
 
+export interface ILeaveRoomPayload {
+  code: TCode;
+  userId: TId;
+}
+
 export interface IAddTrackPayload {
   code: TCode;
   track: ISearchTrack;

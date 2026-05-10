@@ -1,6 +1,7 @@
 import {
   ConnectedSocket,
   MessageBody,
+  OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -53,7 +54,7 @@ type RoomSocket = Socket<
     origin: process.env.CLIENT_URL ?? 'http://localhost:3000',
   },
 })
-export class RoomsGateway {
+export class RoomsGateway implements OnGatewayDisconnect {
   @WebSocketServer()
   server!: RoomServer;
   constructor(private readonly roomsService: RoomsService) {}
@@ -112,6 +113,19 @@ export class RoomsGateway {
     data: ISetPlayingPayload,
   ) {
     const room = this.roomsService.setPlaying(data);
+
+    this.server.to(room.code).emit('room:updated', room);
+  }
+
+  handleDisconnect(client: RoomSocket) {
+    const code = client.data.roomCode;
+    const userId = client.data.userId;
+
+    if (!code || !userId) return;
+
+    const room = this.roomsService.leaveRoom({ code, userId });
+
+    client.disconnect();
 
     this.server.to(room.code).emit('room:updated', room);
   }

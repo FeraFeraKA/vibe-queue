@@ -8,6 +8,7 @@ import {
   ICreateRoomPayload,
   IDeleteTrackPayload,
   IJoinRoomPayload,
+  ILeaveRoomPayload,
   IRoom,
   ISetPlayingPayload,
   IVoteTrackPayload,
@@ -158,6 +159,21 @@ export class RoomsService {
       ...room,
       queue: room.queue.filter((track) => track.queueId !== data.queueId),
       nowPlaying: track,
+    };
+
+    this.rooms.set(normalizedCode, newRoom);
+
+    return newRoom;
+  }
+
+  leaveRoom(data: ILeaveRoomPayload) {
+    const normalizedCode = normalizeCode(data.code);
+
+    const room = this.findRoom(normalizedCode);
+
+    const newRoom = {
+      ...room,
+      users: room.users.filter((user) => user.id !== data.userId),
     };
 
     this.rooms.set(normalizedCode, newRoom);
