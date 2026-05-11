@@ -1,6 +1,6 @@
 "use client";
 
-import type { ITrack } from "@vibe-queue/shared";
+import type { ITrack, IUser } from "@vibe-queue/shared";
 import { Heart, Play, Trash } from "lucide-react";
 import { LayoutGroup, motion } from "motion/react";
 import { Button } from "./button";
@@ -10,6 +10,7 @@ import TrackCover from "./TrackCover";
 
 interface IQueueListProps {
   tracks: ITrack[];
+  currentUser: IUser | null;
   isRoomLoading: boolean;
   handleDeleteTrack: (queueId: string) => void;
   handleLikeTrack: (queueId: string) => void;
@@ -18,6 +19,7 @@ interface IQueueListProps {
 
 const QueueList = ({
   tracks,
+  currentUser,
   isRoomLoading,
   handleDeleteTrack,
   handleLikeTrack,
@@ -87,7 +89,9 @@ const QueueList = ({
                       >
                         <Heart
                           className={
-                            item.likedBy.length > 0
+                            item.likedBy.find(
+                              (user) => user.id === currentUser?.id,
+                            )
                               ? "fill-red-500 text-red-500"
                               : ""
                           }

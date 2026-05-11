@@ -160,6 +160,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
         tracks={sortedTracks}
         nowPlaying={nowPlaying}
         users={room?.users ?? []}
+        currentUser={currentUser}
         isCopied={isCopied}
         isRoomLoading={isRoomLoading}
         handleOpen={handleModal}

@@ -13,6 +13,7 @@ interface IRoomProps {
   tracks: ITrack[];
   nowPlaying?: ITrack | null;
   users: IUser[];
+  currentUser: IUser | null;
   isCopied: boolean;
   isRoomLoading: boolean;
   handleOpen: (flag: boolean) => void;
@@ -27,6 +28,7 @@ const Room = ({
   tracks,
   nowPlaying,
   users,
+  currentUser,
   isCopied,
   isRoomLoading,
   handleOpen,
@@ -114,6 +116,7 @@ const Room = ({
               <p className="text-muted-foreground mt-6">Queue</p>
               <QueueList
                 tracks={tracks}
+                currentUser={currentUser}
                 isRoomLoading={isRoomLoading}
                 handleDeleteTrack={handleDeleteTrack}
                 handleLikeTrack={handleLikeTrack}
