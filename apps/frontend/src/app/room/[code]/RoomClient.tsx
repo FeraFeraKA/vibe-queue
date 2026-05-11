@@ -54,7 +54,9 @@ const RoomClient = ({ code }: ICodeProps) => {
       setIsRoomLoading(false);
     });
 
-    socket.emit("room:watch", { code, userId: currentUser.id });
+    socket.on("connect", () => {
+      socket.emit("room:watch", { code, user: currentUser });
+    });
 
     return () => {
       socket.off("room:updated");

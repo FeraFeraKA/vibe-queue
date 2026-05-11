@@ -7,6 +7,7 @@ import {
   IAddTrackPayload,
   ICreateRoomPayload,
   IDeleteTrackPayload,
+  IEnsureUserPayload,
   IJoinRoomPayload,
   ILeaveRoomPayload,
   IRoom,
@@ -177,6 +178,21 @@ export class RoomsService {
     };
 
     this.rooms.set(normalizedCode, newRoom);
+
+    return newRoom;
+  }
+
+  ensureUser(data: IEnsureUserPayload) {
+    const normalizedCode = normalizeCode(data.code);
+
+    const room = this.findRoom(normalizedCode);
+
+    if (room.users.find((user) => user.id === data.user.id)) return room;
+
+    const newRoom = {
+      ...room,
+      users: [...room.users, data.user],
+    };
 
     return newRoom;
   }

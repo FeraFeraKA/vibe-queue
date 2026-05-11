@@ -11,10 +11,10 @@ import type {
   IDeleteTrackPayload,
   IRoom,
   ISetPlayingPayload,
+  IUser,
   IVoteTrackPayload,
   IWatchRoomPayload,
   TCode,
-  TId,
 } from '@vibe-queue/shared';
 import { Server, Socket } from 'socket.io';
 import { RoomsService } from './rooms.service';
@@ -32,7 +32,7 @@ type TInterServerEvents = Record<never, never>;
 
 interface IRoomSocketData {
   roomCode?: TCode;
-  userId?: TId;
+  user?: IUser;
 }
 
 type RoomServer = Server<
@@ -65,12 +65,12 @@ export class RoomsGateway implements OnGatewayDisconnect {
     @MessageBody()
     data: IWatchRoomPayload,
   ) {
-    const room = this.roomsService.findRoom(data.code);
+    const room = this.roomsService.ensureUser(data);
 
     await client.join(room.code);
 
     client.data.roomCode = room.code;
-    client.data.userId = data.userId;
+    client.data.user = data.user;
 
     this.server.to(room.code).emit('room:updated', room);
 
@@ -119,11 +119,11 @@ export class RoomsGateway implements OnGatewayDisconnect {
 
   handleDisconnect(client: RoomSocket) {
     const code = client.data.roomCode;
-    const userId = client.data.userId;
+    const user = client.data.user;
 
-    if (!code || !userId) return;
+    if (!code || !user) return;
 
-    const room = this.roomsService.leaveRoom({ code, userId });
+    const room = this.roomsService.leaveRoom({ code, userId: user.id });
 
     client.disconnect();
 

@@ -13,7 +13,7 @@ export interface IRoom {
 
 export interface IWatchRoomPayload {
   code: TCode;
-  userId: TId;
+  user: IUser;
 }
 
 export interface ICreateRoomPayload {
@@ -50,6 +50,11 @@ export interface IVoteTrackPayload {
 export interface ISetPlayingPayload {
   code: TCode;
   queueId: TId;
+}
+
+export interface IEnsureUserPayload {
+  code: TCode;
+  user: IUser;
 }
 
 export type TProvider = "spotify" | "mock";
