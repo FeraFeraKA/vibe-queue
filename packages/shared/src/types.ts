@@ -81,3 +81,13 @@ export interface ISearchTracksPayload {
   query: string;
   provider: TProvider;
 }
+
+export interface IParamsProps {
+  params: Promise<{
+    code: string;
+  }>;
+}
+
+export interface ICodeProps {
+  code: TCode;
+}

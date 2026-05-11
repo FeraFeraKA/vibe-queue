@@ -1,4 +1,4 @@
-import AuthForm from "@/components/layout/Form";
+import AuthForm from "@/components/layout/AuthForm";
 
 const JoinPage = () => {
   return (
