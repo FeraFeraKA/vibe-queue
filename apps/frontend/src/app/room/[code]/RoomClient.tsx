@@ -25,6 +25,7 @@ const RoomClient = ({ code }: ICodeProps) => {
   const [isSearching, setIsSearching] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [isRoomLoading, setIsRoomLoading] = useState(true);
+  const [searchError, setSearchError] = useState("");
   const router = useRouter();
 
   const sortedTracks = useMemo(() => {
@@ -89,6 +90,12 @@ const RoomClient = ({ code }: ICodeProps) => {
         if (error instanceof DOMException && error.name === "AbortError") {
           return;
         }
+        setSearchError(
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred",
+        );
+        setIsSearching(false);
         console.error(error);
       }
     }, 200);
@@ -178,6 +185,7 @@ const RoomClient = ({ code }: ICodeProps) => {
         tracks={searchTracks}
         handleAddTrack={handleAddTrack}
         isSearching={isSearching}
+        searchError={searchError}
         handleSearchTracks={handleSearchTracks}
       />
     </>

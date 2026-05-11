@@ -21,6 +21,7 @@ interface ISearchModalProps {
   handleOpen: (flag: boolean) => void;
   handleAddTrack: (track: ISearchTrack) => void;
   isSearching: boolean;
+  searchError: string;
   handleSearchTracks: (query: string) => Promise<void>;
 }
 
@@ -30,6 +31,7 @@ const SearchModal = ({
   tracks,
   handleAddTrack,
   isSearching,
+  searchError,
   handleSearchTracks,
 }: ISearchModalProps) => {
   return (
@@ -45,7 +47,9 @@ const SearchModal = ({
             onValueChange={handleSearchTracks}
           />
           <CommandList className="max-h-[calc(100vh-320px)]">
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>
+              {searchError ? `${searchError}` : "No results found."}
+            </CommandEmpty>
             {isSearching ? (
               <>
                 {Array.from({ length: 10 }).map((_, index) => (
