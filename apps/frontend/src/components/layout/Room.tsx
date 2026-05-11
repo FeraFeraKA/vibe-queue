@@ -3,10 +3,10 @@
 import type { ITrack, IUser } from "@vibe-queue/shared";
 import { Check, Copy, Search } from "lucide-react";
 import { Button } from "../ui/button";
-import QueueList from "../ui/QueueList";
 import { Skeleton } from "../ui/skeleton";
 import TrackCover from "../ui/TrackCover";
-import Users from "../ui/Users";
+import QueueList from "./QueueList";
+import Users from "./Users";
 
 interface IRoomProps {
   code: string;
