@@ -5,15 +5,16 @@ import SearchModal from "@/components/layout/SearchModal";
 import { fetcher } from "@/shared/api/fetcher";
 import { getCurrentRoomUser } from "@/shared/helpers/saveSession";
 import { socket } from "@/shared/socket/socket";
-import type { IRoom, ISearchTrack, IUser } from "@vibe-queue/shared";
-import { usePathname } from "next/navigation";
+import type {
+  ICodeProps,
+  IRoom,
+  ISearchTrack,
+  IUser,
+} from "@vibe-queue/shared";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-interface IRoomClientProps {
-  code: string;
-}
-
-const RoomClient = ({ code }: IRoomClientProps) => {
+const RoomClient = ({ code }: ICodeProps) => {
   const [room, setRoom] = useState<IRoom | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -24,6 +25,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
   const [isSearching, setIsSearching] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [isRoomLoading, setIsRoomLoading] = useState(true);
+  const router = useRouter();
 
   const sortedTracks = useMemo(() => {
     return [...(room?.queue ?? [])].sort((a, b) => b.votes - a.votes);
@@ -37,11 +39,11 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     const currentUser = getCurrentRoomUser(code);
 
     if (!currentUser) {
-      //eslint-disable-next-line react-hooks/set-state-in-effect
-      setIsRoomLoading(false);
+      router.replace(`/room/${code}/join`);
       return;
     }
 
+    //eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentUser(currentUser);
 
     socket.connect();
@@ -58,6 +60,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
       socket.off("room:join");
       socket.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
 
   useEffect(() => {
@@ -153,7 +156,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
     setSearchQuery(query);
   };
 
-  return (
+  return currentUser ? (
     <>
       <Room
         code={code}
@@ -178,7 +181,7 @@ const RoomClient = ({ code }: IRoomClientProps) => {
         handleSearchTracks={handleSearchTracks}
       />
     </>
-  );
+  ) : null;
 };
 
 export default RoomClient;

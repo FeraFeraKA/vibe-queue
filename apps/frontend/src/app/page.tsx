@@ -1,9 +1,11 @@
 import MainPage from "@/components/layout/MainPage";
 
-export default function HomePage() {
+export const HomePage = () => {
   return (
     <>
       <MainPage />
     </>
   );
-}
+};
+
+export default HomePage;
