@@ -40,6 +40,7 @@ const AuthForm = ({
   const [enteredCode, setEnteredCode] = useState("");
   const [enteredNickname, setEnteredNickname] = useState("");
   const [isOperating, setIsOperating] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.SubmitEvent) => {
@@ -73,6 +74,10 @@ const AuthForm = ({
 
       router.push(`/room/${room.code}`);
     } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "An unexpected error occurred",
+      );
+      setIsOperating(false);
       console.error(error);
     }
   };
@@ -114,7 +119,7 @@ const AuthForm = ({
             </div>
           </form>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex flex-col">
           <Button
             type="submit"
             form="create-room-form"
@@ -129,6 +134,7 @@ const AuthForm = ({
               cardButton
             )}
           </Button>
+          {error && <p className="text-red-500 mt-6 text-center">{error}</p>}
         </CardFooter>
       </Card>
     </div>
